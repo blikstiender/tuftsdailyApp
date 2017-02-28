@@ -16,7 +16,6 @@ import { Router, Scene } from 'react-native-router-flux';
 import MainView from './MainView';
 import FirstArticleCard from './FirstArticleCard';
 import FullOpinionsList from './FullOpinionsList';
-import ArticleView from './ArticleView';
 import NewArticleView from './NewArticleView';
 import NewsSection from './NewsSection';
 import OpinionSection from './OpinionSection';
