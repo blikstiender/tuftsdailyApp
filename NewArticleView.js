@@ -54,7 +54,8 @@ class NewArticleView extends Component {
     fetch(this.setAuthorURL())
       .then((response) => response.json())
       .then((responseData) => {
-        this.setState({ authorID: responseData.name, isLoading: false });
+        var authorname = responseData.name
+        this.setState({ authorID: authorname.toUpperCase(), isLoading: false });
       })
       .catch((error) => {
         console.log('Error fetching');
