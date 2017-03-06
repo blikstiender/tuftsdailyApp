@@ -12,6 +12,7 @@
     "react": "~15.4.0",
     "react-native": "0.41.2",
     "react-native-blur": "^2.0.0",
+    "react-native-htmlview": "^0.5.0",
     "react-native-router-flux": "^3.37.0"
   },
   "devDependencies": {
@@ -24,6 +25,8 @@
     "preset": "react-native"
   },
   "rnpm": {
-    "assets": ["./assets/fonts"]
+    "assets": [
+      "./assets/fonts"
+    ]
   }
 }

@@ -24,7 +24,6 @@ class HalfDescriptionArticle extends Component {
   }
 
   setURL() {
-
     return ('https://tuftsdaily.com/wp-json/wp/v2/media/' + (this.props.article.featured_media).toString());
   }
 
