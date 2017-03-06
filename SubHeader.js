@@ -1,89 +1,72 @@
-// Import libraries for making a componenet
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
-import ArticlesList from './ArticlesList';
-import FullOpinionsList from './FullOpinionsList';
+import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-// Make a component
-class SubHeader extends Component {
-  state={todayPressStatus: true, topPressStatus: false, opinionsPressStatus: false};
+export default class SubHeader extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTab: props.currentTab,
+    };
+  }
 
-  renderArticles() {
-    if (this.state.opinionsPressStatus) {
-      return(
-        <FullOpinionsList />
-      )
-    }
-    else if (this.state.todayPressStatus) {
-      return (
-        <ArticlesList />
-      )
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      currentTab: nextProps.currentTab,
+    })
+  }
+
+  tabPressed(tab, e) {
+    this.props.onTabPressed(tab, e);
+  }
+
+  tabStyle(tab) {
+    if (this.state.currentTab == tab) {
+      return [styles.navTab, styles.activeNavTab];
     }
     else {
-      return (
-        <ArticlesList />
-      )
+      return styles.navTab;
     }
   }
+
   render() {
-  return (
-    <View>
-    <View style={styles.viewStyle}>
-      <TouchableOpacity
-        onPress={() => this.setState({ todayPressStatus: true, topPressStatus: false, opinionsPressStatus: false })}
-        style={this.state.todayPressStatus ? styles.borderStyle : styles.noBorderStyle }
-      >
-        <Text style={{ fontSize: 13 }}>Today</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => this.setState({ todayPressStatus: false, topPressStatus: true, opinionsPressStatus: false })}
-        style={this.state.topPressStatus ? styles.borderStyle : styles.noBorderStyle }
-      >
-        <Text style={{ fontSize: 13 }}>Top Stories</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => this.setState({ todayPressStatus: false, topPressStatus: false, opinionsPressStatus: true })}
-        style={this.state.opinionsPressStatus ? styles.borderStyle : styles.noBorderStyle }
-      >
-        <Text style={{ fontSize: 13 }}>Opinion</Text>
-      </TouchableOpacity>
-    </View>
-    <View>
-      {this.renderArticles()}
-    </View>
-  </View>
-  );
-}
+    return (
+      <View style={styles.container}>
+        {this.props.tabs.map(tab => {
+          return (
+            <TouchableOpacity style={this.tabStyle(tab)}
+                              onPress={e => this.tabPressed(tab, e)}>
+              <Text style={styles.textStyle}>{tab}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    )
+  }
 };
 
-const styles = {
-  viewStyle: {
-    backgroundColor: '#fafafa',
-    justifyContent: 'center',
+const styles = StyleSheet.create({
+  container: {
     alignItems: 'center',
-    height: 20,
-    position: 'relative',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 30,
-    paddingRight: 30,
-    marginTop: 10
+    justifyContent: 'space-around',
+  },
+  navTab: {
+    flexBasis: 0,
+    flexGrow: 1,
+    padding: 8,
+  },
+  activeNavTab: {
+    borderTopWidth: 3,
+    borderTopColor: '#67A1D1',
+    paddingTop: 5,
   },
 	textStyle: {
-		fontSize: 20
+		fontFamily: 'Superclarendon',
+    fontSize: 13,
+    textAlign: 'center'
 	},
   navigatorStyle: {
     height: 20,
     width: 20,
   },
-  borderStyle: {
-    borderTopColor: '#67A1D1',
-    borderTopWidth: 2
-  },
-  noBorderStyle: {
-
-  }
-};
-
-//Make the componenet available to other parts of the app
-export default SubHeader;
+});
