@@ -73,7 +73,7 @@ class HalfPictureHeadlineArticle extends Component {
               /></Text>
               <Text style={{ color: '#778899', fontSize: 10, textAlign: 'right', paddingTop: 5, }}>{this.state.authorID}</Text>
               <View style={{ paddingTop: 20 }}>
-              <ShareButton></ShareButton>
+              <ShareButton articleURL={this.props.article.link}></ShareButton>
             </View>
             </View>
             <View style={{paddingTop: 15, marginRight: 20, paddingBottom: 25}}>
@@ -99,7 +99,7 @@ class HalfPictureHeadlineArticle extends Component {
                 /></Text>
                 <Text style={{ color: '#778899', fontSize: 10, paddingTop: 5, textAlign: 'right' }}>{this.state.authorID}</Text>
                 <View style={{ paddingTop: 20 }}>
-                  <ShareButton></ShareButton>
+                  <ShareButton articleURL={this.props.article.link}></ShareButton>
                 </View>
               </View>
               <View>
