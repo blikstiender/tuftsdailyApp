@@ -30,10 +30,10 @@ export default class MainHeader extends Component {
   }
 
   fetchDavisETA() {
-    fetch("https://tufts.doublemap.com/map/v2/eta?stop=1")
+    fetch("https://tufts.doublemap.com/map/v2/eta?stop=2")
       .then((response) => response.json())
       .then((responseData) => {
-        this.setState({ davisETA: responseData.etas[1].etas[0].avg, isLoading: false,});
+        this.setState({ davisETA: responseData.etas[2].etas[0].avg, isLoading: false,});
       })
       .catch((error) => {
         console.log(error);
@@ -42,10 +42,10 @@ export default class MainHeader extends Component {
   }
 
   fetchCCETA() {
-    fetch("https://tufts.doublemap.com/map/v2/eta?stop=2")
+    fetch("https://tufts.doublemap.com/map/v2/eta?stop=1")
       .then((response) => response.json())
       .then((responseData) => {
-        this.setState({ ccETA: responseData.etas[2].etas[0].avg, isLoading: false,});
+        this.setState({ ccETA: responseData.etas[1].etas[0].avg, isLoading: false,});
       })
       .catch((error) => {
         console.log(error);
