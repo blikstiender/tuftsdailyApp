@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ScrollView, Linking, Share } from 'react-native';
 import ArticleCardImg from './ArticleCardImg';
 import ArticleCardArt from './ArticleCardArt';
 import ArticleCardSection from './ArticleCardSection';
@@ -71,6 +71,17 @@ class NewArticleView extends Component {
       .done();
   }
 
+  shareArticle() {
+    console.log("Trying to share")
+      Share.share({
+        url: this.props.article.link
+        //console.log(message);
+      },
+      )
+      //.then(this._showResult)
+      .catch((error) => console.log(error));
+    }
+
 render() {
   const goBack = () => Actions.pop();
   if (this.props.isLoading) {
@@ -113,7 +124,7 @@ return (
   <TouchableOpacity style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
     <Image source={require('./blackhearticon.png')} style={{ height: 40, width: 40}} />
   </TouchableOpacity>
-  <TouchableOpacity onPress={goBack} style={{position: 'absolute', right: 100, bottom: 10, justifyContent: 'center'}}>
+  <TouchableOpacity onPress={() => this.shareArticle()} style={{position: 'absolute', right: 100, bottom: 10, justifyContent: 'center'}}>
     <Image source={require('./shareicon.png')} style={{ height: 40, width: 40}} />
   </TouchableOpacity>
 </View>
