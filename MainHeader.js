@@ -12,6 +12,8 @@ export default class MainHeader extends Component {
   }
   componentWillMount() {
     this.fetchWeather();
+    this.fetchDavisETA();
+    this.fetchCCETA();
   }
 
   fetchWeather() {
@@ -20,6 +22,30 @@ export default class MainHeader extends Component {
       .then((responseData) => {
         console.log('Weather');
         this.setState({ temp: Math.round(responseData.current.temp_f), isLoading: false, imageURL: 'https:' + responseData.current.condition.icon });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .done();
+  }
+
+  fetchDavisETA() {
+    fetch("https://tufts.doublemap.com/map/v2/eta?stop=1")
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({ davisETA: responseData.etas[1].etas[0].avg, isLoading: false,});
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .done();
+  }
+
+  fetchCCETA() {
+    fetch("https://tufts.doublemap.com/map/v2/eta?stop=2")
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({ ccETA: responseData.etas[2].etas[0].avg, isLoading: false,});
       })
       .catch((error) => {
         console.log(error);
@@ -45,7 +71,7 @@ export default class MainHeader extends Component {
         <View style={styles.bottomContainer}>
           <DoubleLine style={styles.doubleLine}/>
           <Image style={styles.shuttleIcon} source={require('./shuttle.png')} />
-          <Text style={styles.shuttleInfo}>Davis 2min CC 4min</Text>
+          <Text style={styles.shuttleInfo}>Davis {this.state.davisETA}min CC {this.state.ccETA}min</Text>
           <DoubleLine style={styles.doubleLine} />
         </View>
       </View>
