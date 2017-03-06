@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
 import ArticleCardImg from './ArticleCardImg';
 import ArticleCardArt from './ArticleCardArt';
 import ArticleCardSection from './ArticleCardSection';
 import { Actions } from 'react-native-router-flux';
+import HTMLView from 'react-native-htmlview';
 var moment = require('moment');
 var REQUEST_MEDIA_URL = "https://tuftsdaily.com/wp-json/wp/v2/media/"
 
@@ -25,7 +26,7 @@ class NewArticleView extends Component {
   parseDate(){
     var fdate = moment(this.state.date, "YYYY-MM-DD").format("MMM D YYYY");
     this.setState({date: fdate})
-    console.log(this.state);
+    //console.log(this.state);
   }
 
   // setURL() {
@@ -36,12 +37,19 @@ class NewArticleView extends Component {
   fetchImage() {
     if(this.props.article.featured_media != 0){
             REQUEST_MEDIA_URL = REQUEST_MEDIA_URL + this.props.article.featured_media
-            fetch(REQUEST_MEDIA_URL)
+            console.log(REQUEST_MEDIA_URL)
+            //fetch(REQUEST_MEDIA_URL)
+            fetch("https://tuftsdaily.com/wp-json/wp/v2/media/" + this.props.article.featured_media)
                 .then((response) => response.json())
                 .then((responseData) => {
+                  console.log(responseData)
                   this.setState({hasImage: true, imageID: responseData.media_details.sizes.medium.source_url})
                   //console.log(this.state);
                 })
+                .catch((error) => {
+                  console.log(error);
+                })
+                .done();
 
           }
   }
@@ -72,7 +80,7 @@ render() {
   }
 else {
   if(this.state.hasImage == true){
-    console.log("image")
+    //console.log("image")
 return (
   <View>
   <ScrollView style={{ marginTop: 20 }}>
@@ -86,9 +94,16 @@ return (
     </ArticleCardImg>
     <ArticleCardArt>
       <View style={{ marginLeft: 8, marginRight: 8 }}>
-        <Text style={styles.headerTextStyle}>{ this.state.title }</Text>
+        <Text style={styles.headerTextStyle}>
+          <HTMLView value={ this.state.title } />
+        </Text>
         <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID} | {this.state.date}</Text>
-        <Text style={styles.descriptionTextStyle}>{ this.props.article.content.rendered }</Text>
+        <Text style={styles.descriptionTextStyle}>
+          <HTMLView
+            value={ this.props.article.content.rendered }
+            onLinkPress={(url) => Linking.openURL.call(Linking, url)}
+          />
+        </Text>
       </View>
     </ArticleCardArt>
   </ScrollView>
@@ -104,16 +119,16 @@ return (
 </View>
 )}
 else{
-  console.log("hi no image");
-  console.log(this.state)
+  //console.log("hi no image");
+//  console.log(this.state)
   return (
     <View>
     <ScrollView style={{ marginTop: 20 }}>
       <ArticleCardArt>
         <View style={{ marginLeft: 8, marginRight: 8 }}>
-          <Text style={styles.headerTextStyle}>{ this.state.title }</Text>
+          <Text style={styles.headerTextStyle}><HTMLView value={ this.state.title } /></Text>
           <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID} | {this.state.date}</Text>
-          <Text style={styles.descriptionTextStyle}>{ this.props.article.content.rendered }</Text>
+          <Text style={styles.descriptionTextStyle}><HTMLView value={ this.props.article.content.rendered } /></Text>
         </View>
       </ArticleCardArt>
     </ScrollView>
@@ -154,7 +169,8 @@ const styles = {
   descriptionTextStyle: {
     fontSize: 12,
     color: '#696969',
-    fontFamily: 'Avenir'
+    fontFamily: 'Avenir',
+    marginBottom: 10
   },
 
   imageStyle: {

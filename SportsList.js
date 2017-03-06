@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import ArticleCard from './ArticleCard';
 import PictureHeadlineArticle from './PictureHeadlineArticle';
 import HeadlineArticle from './HeadlineArticle';
 import FirstArticleCard from './FirstArticleCard';
+import HalfPictureHeadlineArticle from './HalfPictureHeadlineArticle';
 
 class SportsList extends Component {
   constructor() {
@@ -29,6 +31,7 @@ componentWillMount() {
 
 
   render() {
+    const goToSports = () => Actions.sportsSection();
     if (this.state.isLoading) {
       return (
         <Text></Text>
@@ -44,7 +47,7 @@ componentWillMount() {
             <PictureHeadlineArticle article={this.state.articles[0]} />
             <View style={{ height: 10, backgroundColor: '#fff'}}></View>
             <PictureHeadlineArticle article={this.state.articles[1]} />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={goToSports}>
               <View style={{ padding: 5, justifyContent: 'space-between', flexDirection: 'row',alignItems:'center', backgroundColor: '#fff', }}>
                 <Text style={{ color: '#a8a8a8', fontSize: 10, paddingLeft: 3 }}>More Sports</Text>
                 <Text style={{ color: '#67A1D1', fontSize: 20, fontWeight: '500', paddingRight: 3 }}>></Text>

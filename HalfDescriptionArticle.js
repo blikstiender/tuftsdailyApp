@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import HTMLView from 'react-native-htmlview';
 import ArticleCard from './ArticleCard';
 import ArticleCardSection from './ArticleCardSection';
 import ArticleCardSection2 from './ArticleCardSection2';
@@ -80,14 +81,21 @@ render() {
       <ArticleCard>
       <ArticleCardSection2>
         <View style={styles.headerContentStyle}>
-          <Text style={styles.headerTextStyle}>{ this.state.title }</Text>
+          <View style={styles.searchBorderStyle}>
+          </View>
+          <Text style={styles.headerTextStyle}><HTMLView
+            value={'<p>' + this.state.title + '</p>'}
+          /></Text>
           <Text style={{ color: '#778899', fontSize: 10, textAlign: 'right', paddingTop: 5, justifyContent: 'center' }}>{this.state.authorID}</Text>
           <View style={{ paddingTop: 20 }}>
           <ShareButton></ShareButton>
         </View>
         </View>
-        <View style={{paddingTop: 15, marginRight: 20}}>
-          <Text numberOfLines={6} style={styles.descriptionTextStyle}>{this.props.article.excerpt.rendered}</Text>
+        <View style={{paddingTop: 15, marginRight: 20, paddingBottom: 25}}>
+          <Text numberOfLines={6} style={styles.descriptionTextStyle}> <HTMLView
+              value={this.props.article.excerpt.rendered}
+            />
+          </Text>
         </View>
       </ArticleCardSection2>
     </ArticleCard>
@@ -128,6 +136,13 @@ const styles = {
   halfImageStyle: {
     width: 200,
     height: 200
+  },
+  searchBorderStyle: {
+    borderBottomWidth: 3,
+    borderColor: '#545454',
+    height: 3,
+    width: 140,
+    marginLeft: 10
   }
 };
 

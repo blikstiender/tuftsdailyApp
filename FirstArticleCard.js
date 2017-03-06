@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, WebView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, WebView, StyleSheet, Linking } from 'react-native';
+import HTMLView from 'react-native-htmlview';
 import { Actions } from 'react-native-router-flux';
 import ArticleCardSection from './ArticleCardSection';
 import ArticleCard from './ArticleCard';
@@ -7,15 +8,17 @@ import ArticleCard from './ArticleCard';
 class FirstArticleCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: props.article.title.rendered, imageID: 'https://now.tufts.edu/sites/default/files/bodyimages/150429_jumbo_L_inside.jpg', authorID: props.article.author, isLoading: true};
+    this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true};
   }
 
   componentWillMount() {
     this.fetchAuthor();
     if (this.props.article.featured_media == 0) {
-      this.setState({ title: this.props.article.title.rendered, imageID: 'https://now.tufts.edu/sites/default/files/bodyimages/150429_jumbo_L_inside.jpg', isLoading: false})
+      this.setState({ title: this.props.article.title.rendered, imageID: '', isLoading: false})
+    //  console.log("YAYAYAYYYYA")
     }
     else {
+    //  console.log("KKKKKKKK")
       this.fetchImage();
     }
   }
@@ -26,19 +29,21 @@ class FirstArticleCard extends Component {
   }
 
   fetchImage() {
+  //  console.log("In fetch image")
     fetch(this.setURL())
       .then((response) => response.json())
       .then((responseData) => {
         // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
       //  console.log('Fetching image')
+      //console.log(responseData)
         this.setState({ imageID: responseData.media_details.sizes.medium.source_url, isLoading: false });
-
+      //  console.log("OGOGOGOGOG")
 
         //console.log(this.state.articles);
         //console.log(this.state.articles[0].title.rendered)
       })
       .catch((error) => {
-      //  console.log('Error fetching');
+       console.log(error);
       })
       .done();
   }
@@ -53,7 +58,7 @@ class FirstArticleCard extends Component {
       .then((responseData) => {
         // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
       //  console.log('Fetching author')
-        this.setState({ authorID: responseData.name, isLoading: false });
+        this.setState({ authorID: responseData.name});
       //  console.log(responseData)
 
         //console.log(this.state.articles);
@@ -67,46 +72,96 @@ class FirstArticleCard extends Component {
 
 
 render() {
+  //console.log("FIRST ARTICLE CARD")
   const goToArticle = () => Actions.pageThree({ article: this.props.article });
-  if (this.props.isLoading) {
+  if (this.state.isLoading) {
     return (
       <Text></Text>
     )
   }
+  else if (this.props.article.featured_media == 0 ) {
+  //  console.log("YOOOO")
+    return (
+      <TouchableOpacity onPress={goToArticle}>
+        <ArticleCard>
+        <ArticleCardSection style={styles.headerContentStyle}>
+          <View style={{  alignItems: 'center', marginTop: 10 }}>
+          {/*  <Text style={styles.headerTextStyle}>{this.state.title}</Text>*/}
+          <Text style={styles.headerTextStyle}>
+          <HTMLView
+            value={'<p>' + this.props.article.title.rendered + '</p>'}
+          />
+          </Text>
+            <Text style={{ color: '#778899', fontSize: 10, fontWeight: '500', padding: 5 }}>{this.state.authorID}</Text>
+          </View>
+          <View style={{ marginLeft: 5, marginRight: 5, alignItems: 'center' }}>
+            <Text numberOfLines={6} style={styles.descriptionTextStyle}> <HTMLView
+                value={this.props.article.excerpt.rendered}
+              />
+            </Text>
+          {/*  <HTMLView
+              value={this.props.article.excerpt.rendered}
+              stylesheet={styles.descriptionCSS}
+              numberOfLines={4}
+            />*/}
+          </View>
+          <View style={styles.borderStyle}>
+          </View>
+        </ArticleCardSection>
+      </ArticleCard>
+      </TouchableOpacity>
+    )
+
+  }
   else {
-return (
-  <TouchableOpacity onPress={goToArticle}>
-    <ArticleCard>
-    <ArticleCardSection style={styles.headerContentStyle}>
-      <View style={{ marginBottom: 10,  }}>
-        <Image
-          style={styles.imageStyle}
-          source={{ uri: this.state.imageID }}
+  //  console.log("WOOOOOO")
+  return (
+    <TouchableOpacity onPress={goToArticle}>
+      <ArticleCard>
+      <ArticleCardSection style={styles.headerContentStyle}>
+        <View style={{ marginBottom: 10,  }}>
+          <Image
+            style={styles.imageStyle}
+
+            source={{ uri: this.state.imageID }}
+          />
+        </View>
+        <View style={{  alignItems: 'center' }}>
+        {/*  <Text style={styles.headerTextStyle}>{this.state.title}</Text>*/}
+        <Text style={styles.headerTextStyle}>
+        <HTMLView
+          value={'<p>' + this.props.article.title.rendered+ '</p>'}
         />
-      </View>
-      <View style={{  alignItems: 'center' }}>
-        <Text style={styles.headerTextStyle}>{this.state.title}</Text>
-        <Text style={{ color: '#778899', fontSize: 10, fontWeight: '500', padding: 5 }}>{this.state.authorID}</Text>
-      </View>
-      <View style={{ marginLeft: 5, marginRight: 5 }}>
-        <Text style={styles.descriptionTextStyle}>{this.props.article.excerpt.rendered}</Text>
-      </View>
-      <View style={styles.borderStyle}>
-      </View>
-    </ArticleCardSection>
-  </ArticleCard>
-  </TouchableOpacity>
-)
-};
-}
+        </Text>
+          <Text style={{ color: '#778899', fontSize: 10, fontWeight: '500', padding: 5 }}>{this.state.authorID}</Text>
+        </View>
+        <View style={{ marginLeft: 5, marginRight: 5, alignItems: 'center' }}>
+          <Text numberOfLines={6} style={styles.descriptionTextStyle}> <HTMLView
+              value={this.props.article.excerpt.rendered}
+            />
+          </Text>
+        {/*  <HTMLView
+            value={this.props.article.excerpt.rendered}
+            stylesheet={styles.descriptionCSS}
+            numberOfLines={4}
+          />*/}
+        </View>
+        <View style={styles.borderStyle}>
+        </View>
+      </ArticleCardSection>
+    </ArticleCard>
+    </TouchableOpacity>
+  )
+  }
+  }
 }
 
 const styles = {
   headerContentStyle: {
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
-
   },
   headerTextStyle: {
     fontSize: 18,
@@ -115,14 +170,24 @@ const styles = {
     marginLeft: 40,
     marginRight: 40,
     textAlign: 'center'
-
   },
   descriptionTextStyle: {
     fontSize: 14,
     color: '#696969',
     fontFamily: 'Avenir',
     textAlign: 'center',
+    marginBottom: 10
   },
+
+  descriptionCSS: {
+    p: {
+      textAlign: 'center',
+      fontSize: 14,
+      color: '#696969',
+
+    }
+  },
+
   thumbnailStyle: {
     height: 150,
     width: 150
@@ -154,5 +219,14 @@ const styles = {
 
   }
 };
+
+const styles2 = StyleSheet.create({
+  p: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: '#696969',
+    margin: 0 // pink links
+  },
+})
 
 export default FirstArticleCard;

@@ -16,8 +16,8 @@ const ShareButton = () => {
 const styles = {
   buttonImageStyle: {
     alignSelf: 'center',
-    height: 20,
-    width: 20,
+    height: 30,
+    width: 30,
     marginBottom: 10
   },
   buttonStyle: {

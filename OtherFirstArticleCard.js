@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, WebView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import HTMLView from 'react-native-htmlview';
 import ArticleCardSection from './ArticleCardSection';
 import ArticleCard from './ArticleCard';
 
@@ -48,11 +49,14 @@ return (
     <ArticleCard>
     <ArticleCardSection style={styles.headerContentStyle}>
       <View style={{  alignItems: 'center', paddingTop: 10, }}>
-        <Text style={styles.headerTextStyle}>{this.state.title}</Text>
+        <Text style={styles.headerTextStyle}><HTMLView value={ this.state.title } /></Text>
         <Text style={{ color: '#778899', fontSize: 10, fontWeight: '500', paddingTop: 8, paddingBottom: 8 }}>{this.state.authorID}</Text>
       </View>
-      <View style={{ marginLeft: 5, marginRight: 5 }}>
-        <Text style={styles.descriptionTextStyle}>{this.props.article.excerpt.rendered}</Text>
+      <View style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }}>
+        <Text numberOfLines={6} style={styles.descriptionTextStyle}> <HTMLView
+            value={this.props.article.excerpt.rendered}
+          />
+        </Text>
       </View>
       <View style={styles.borderStyle}>
       </View>
