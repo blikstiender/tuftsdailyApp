@@ -5,6 +5,7 @@ import PictureDescriptionArticle from './PictureDescriptionArticle';
 import PictureHeadlineArticle from './PictureHeadlineArticle';
 import HeadlineArticle from './HeadlineArticle';
 import OtherFirstArticleCard from './OtherFirstArticleCard';
+import HalfPictureHeadlineArticle from './HalfPictureHeadlineArticle';
 
 class ArtsList extends Component {
   constructor() {
@@ -43,7 +44,7 @@ componentWillMount() {
         </View>
           <OtherFirstArticleCard article={this.state.articles[0]} />
           <ArticleCard>
-            <PictureHeadlineArticle article={this.state.articles[4]} />
+            <PictureHeadlineArticle article={this.state.articles[1]} />
             <HeadlineArticle article={this.state.articles[2]} />
             <TouchableOpacity>
               <View style={{ padding: 5, justifyContent: 'space-between', flexDirection: 'row',alignItems:'center', backgroundColor: '#fff', }}>
@@ -52,6 +53,7 @@ componentWillMount() {
               </View>
             </TouchableOpacity>
           </ArticleCard>
+          <HalfPictureHeadlineArticle article={this.props.featureArticle} />
         </View>
       );
     }

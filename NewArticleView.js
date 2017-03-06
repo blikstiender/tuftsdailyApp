@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
-import ArticleCard from './ArticleCard';
+import { Text, View, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import ArticleCardImg from './ArticleCardImg';
+import ArticleCardArt from './ArticleCardArt';
 import ArticleCardSection from './ArticleCardSection';
 import { Actions } from 'react-native-router-flux';
+import HTMLView from 'react-native-htmlview';
+var moment = require('moment');
+var REQUEST_MEDIA_URL = "https://tuftsdaily.com/wp-json/wp/v2/media/"
 
 class NewArticleView extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: props.article.title.rendered, imageID: 'https://now.tufts.edu/sites/default/files/bodyimages/150429_jumbo_L_inside.jpg', authorID: props.article.author, isLoading: true};
+    this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true, hasImage: false, date: props.article.date};
   }
   componentWillMount() {
     this.fetchAuthor();
+    this.parseDate();
     if (this.props.article.featured_media == 0) {
       this.setState({ isLoading: false })
     }
@@ -18,21 +23,35 @@ class NewArticleView extends Component {
       this.fetchImage();
     }
   }
-
-  setURL() {
-
-    return ('https://tuftsdaily.com/wp-json/wp/v2/media/' + (this.props.article.featured_media).toString());
+  parseDate(){
+    var fdate = moment(this.state.date, "YYYY-MM-DD").format("MMM D YYYY");
+    this.setState({date: fdate})
+    //console.log(this.state);
   }
 
+  // setURL() {
+  //
+  //   return ('https://tuftsdaily.com/wp-json/wp/v2/media/' + (this.props.article.featured_media).toString());
+  // }
+
   fetchImage() {
-    fetch(this.setURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ imageID: responseData.media_details.sizes.medium.source_url, isLoading: false });
-      })
-      .catch((error) => {
-      })
-      .done();
+    if(this.props.article.featured_media != 0){
+            REQUEST_MEDIA_URL = REQUEST_MEDIA_URL + this.props.article.featured_media
+            console.log(REQUEST_MEDIA_URL)
+            //fetch(REQUEST_MEDIA_URL)
+            fetch("https://tuftsdaily.com/wp-json/wp/v2/media/" + this.props.article.featured_media)
+                .then((response) => response.json())
+                .then((responseData) => {
+                  console.log(responseData)
+                  this.setState({hasImage: true, imageID: responseData.media_details.sizes.medium.source_url})
+                  //console.log(this.state);
+                })
+                .catch((error) => {
+                  console.log(error);
+                })
+                .done();
+
+          }
   }
 
   setAuthorURL() {
@@ -43,7 +62,8 @@ class NewArticleView extends Component {
     fetch(this.setAuthorURL())
       .then((response) => response.json())
       .then((responseData) => {
-        this.setState({ authorID: responseData.name, isLoading: false });
+        var authorname = responseData.name
+        this.setState({ authorID: authorname.toUpperCase(), isLoading: false });
       })
       .catch((error) => {
         console.log('Error fetching');
@@ -59,22 +79,33 @@ render() {
     )
   }
 else {
+  if(this.state.hasImage == true){
+    //console.log("image")
 return (
   <View>
   <ScrollView style={{ marginTop: 20 }}>
-    <ArticleCard>
+    <ArticleCardImg>
       <View style={{ marginBottom: 10, }}>
         <Image
           style={styles.imageStyle}
           source={{uri: this.state.imageID }}
         />
       </View>
+    </ArticleCardImg>
+    <ArticleCardArt>
       <View style={{ marginLeft: 8, marginRight: 8 }}>
-        <Text style={styles.headerTextStyle}>{ this.state.title }</Text>
-        <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>
-        <Text style={styles.descriptionTextStyle}>{ this.props.article.content.rendered }</Text>
+        <Text style={styles.headerTextStyle}>
+          <HTMLView value={ this.state.title } />
+        </Text>
+        <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID} | {this.state.date}</Text>
+        <Text style={styles.descriptionTextStyle}>
+          <HTMLView
+            value={ this.props.article.content.rendered }
+            onLinkPress={(url) => Linking.openURL.call(Linking, url)}
+          />
+        </Text>
       </View>
-    </ArticleCard>
+    </ArticleCardArt>
   </ScrollView>
   <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
     <Image source={require('./backarrow.png')} style={{ height: 40, width: 40}} />
@@ -86,10 +117,39 @@ return (
     <Image source={require('./shareicon.png')} style={{ height: 40, width: 40}} />
   </TouchableOpacity>
 </View>
-)
+)}
+else{
+  //console.log("hi no image");
+//  console.log(this.state)
+  return (
+    <View>
+    <ScrollView style={{ marginTop: 20 }}>
+      <ArticleCardArt>
+        <View style={{ marginLeft: 8, marginRight: 8 }}>
+          <Text style={styles.headerTextStyle}><HTMLView value={ this.state.title } /></Text>
+          <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID} | {this.state.date}</Text>
+          <Text style={styles.descriptionTextStyle}><HTMLView value={ this.props.article.content.rendered } /></Text>
+        </View>
+      </ArticleCardArt>
+    </ScrollView>
+    <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
+      <Image source={require('./backarrow.png')} style={{ height: 40, width: 40}} />
+    </TouchableOpacity>
+    <TouchableOpacity style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
+      <Image source={require('./blackhearticon.png')} style={{ height: 40, width: 40}} />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={goBack} style={{position: 'absolute', right: 100, bottom: 10, justifyContent: 'center'}}>
+      <Image source={require('./shareicon.png')} style={{ height: 40, width: 40}} />
+    </TouchableOpacity>
+  </View>
+  )
 }
 }
 }
+}
+
+var Dimensions = require('Dimensions');
+var windowSize = Dimensions.get('window');
 
 const styles = {
   headerContentStyle: {
@@ -109,12 +169,14 @@ const styles = {
   descriptionTextStyle: {
     fontSize: 12,
     color: '#696969',
-    fontFamily: 'Avenir'
+    fontFamily: 'Avenir',
+    marginBottom: 10
   },
 
   imageStyle: {
-    height: 200,
-    width: null,
+    left: 0,
+    height: 250,
+    width: windowSize.width,
     flex: 1,
 
   },

@@ -5,6 +5,7 @@ import ArticleCard from './ArticleCard';
 import PictureDescriptionArticle from './PictureDescriptionArticle';
 import HeadlineArticle from './HeadlineArticle';
 import OtherFirstArticleCard from './OtherFirstArticleCard';
+import HalfPictureHeadlineArticle from './HalfPictureHeadlineArticle';
 
 class OpinionsList extends Component {
   constructor() {
@@ -44,9 +45,9 @@ componentWillMount() {
           </View>
           <OtherFirstArticleCard article={this.state.articles[0]} />
           <ArticleCard>
-            <HeadlineArticle article={this.state.articles[3]}/>
-            <HeadlineArticle article={this.state.articles[4]} />
-            <HeadlineArticle article={this.state.articles[7]} />
+            <HeadlineArticle article={this.state.articles[1]}/>
+            <HeadlineArticle article={this.state.articles[2]} />
+            <HeadlineArticle article={this.state.articles[3]} />
             <TouchableOpacity onPress={goToOpinions}>
               <View style={{ padding: 5, justifyContent: 'space-between', flexDirection: 'row',alignItems:'center', backgroundColor: '#fff', }}>
                 <Text style={{ color: '#a8a8a8', fontSize: 10, paddingLeft: 3 }}>More Opinion</Text>
@@ -54,6 +55,7 @@ componentWillMount() {
               </View>
             </TouchableOpacity>
           </ArticleCard>
+          <HalfPictureHeadlineArticle article={this.props.featureArticle} />
         </View>
       );
     }

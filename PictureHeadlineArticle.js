@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import HTMLView from 'react-native-htmlview';
 import ArticleCard from './ArticleCard';
 import ArticleCardSection from './ArticleCardSection';
 
 class PictureHeadlineArticle extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: props.article.title.rendered, imageID: 'https://now.tufts.edu/sites/default/files/bodyimages/150429_jumbo_L_inside.jpg', authorID: props.article.author, isLoading: true};
+    this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true};
   }
 
   componentWillMount() {
@@ -38,7 +39,7 @@ class PictureHeadlineArticle extends Component {
         //console.log(this.state.articles[0].title.rendered)
       })
       .catch((error) => {
-      //  console.log('Error fetching');
+        console.log(error);
       })
       .done();
   }
@@ -53,14 +54,14 @@ class PictureHeadlineArticle extends Component {
       .then((responseData) => {
         // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
       //  console.log('Fetching author')
-        this.setState({ authorID: responseData.name, isLoading: false });
+        this.setState({ authorID: responseData.name});
       //  console.log(responseData)
 
         //console.log(this.state.articles);
         //console.log(this.state.articles[0].title.rendered)
       })
       .catch((error) => {
-        console.log('Error fetching');
+        console.log(error);
       })
       .done();
   }
@@ -72,12 +73,16 @@ if (this.props.isLoading) {
     <Text></Text>
   )
 }
-else if (this.props.article.featured_media == 0){
+else if (this.props.article.featured_media == 0 || this.state.imageID == ''){
 return (
   <TouchableOpacity onPress={goToArticle}>
     <ArticleCardSection>
-      <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, marginTop: 15 }}>
-        <Text style={styles.headerTextStyle}>{ this.state.title }</Text>
+      <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, paddingTop: 15 }}>
+        <Text style={styles.headerTextStyle}>
+        <HTMLView
+          value={'<p>' + this.state.title + '</p>'}
+        />
+        </Text>
       </View>
       <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>
@@ -104,7 +109,11 @@ return (
         />
       </View>
       <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8 }}>
-        <Text style={styles.headerTextStyle}>{ this.state.title }</Text>
+        <Text style={styles.headerTextStyle}>
+        <HTMLView
+          value={'<p>' + this.state.title + '</p>'}
+        />
+        </Text>
       </View>
       <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>

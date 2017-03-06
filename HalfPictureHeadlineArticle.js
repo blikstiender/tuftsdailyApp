@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import HTMLView from 'react-native-htmlview';
 import ArticleCard from './ArticleCard';
 import ArticleCardSection2 from './ArticleCardSection2';
 import ShareButton from './ShareButton';
@@ -8,7 +9,7 @@ import ShareButton from './ShareButton';
 class HalfPictureHeadlineArticle extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: props.article.title.rendered, imageID: 'https://now.tufts.edu/sites/default/files/bodyimages/150429_jumbo_L_inside.jpg', authorID: props.article.author, isLoading: true};
+    this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true};
   }
 
   componentWillMount() {
@@ -59,14 +60,44 @@ class HalfPictureHeadlineArticle extends Component {
         <Text></Text>
       )
     }
+    else if (this.props.article.featured_media == 0 || this.state.imageID == '') {
+      return (
+        <TouchableOpacity style={{ marginTop: 10}} onPress={goToArticle}>
+          <ArticleCard>
+          <ArticleCardSection2>
+            <View style={styles.headerContentStyle}>
+              <View style={styles.searchBorderStyle}>
+              </View>
+              <Text style={styles.otherHeaderTextStyle}><HTMLView
+                value={'<p>' + this.state.title + '</p>'}
+              /></Text>
+              <Text style={{ color: '#778899', fontSize: 10, textAlign: 'right', paddingTop: 5, }}>{this.state.authorID}</Text>
+              <View style={{ paddingTop: 20 }}>
+              <ShareButton></ShareButton>
+            </View>
+            </View>
+            <View style={{paddingTop: 15, marginRight: 20, paddingBottom: 25}}>
+              <Text numberOfLines={6} style={styles.descriptionTextStyle}> <HTMLView
+                  value={this.props.article.excerpt.rendered}
+                />
+              </Text>
+            </View>
+          </ArticleCardSection2>
+        </ArticleCard>
+        </TouchableOpacity>
+      )
+
+    }
     else {
       return (
         <TouchableOpacity style={{ marginTop: 10}} onPress={goToArticle}>
           <ArticleCard>
             <ArticleCardSection2>
               <View style={styles.headerContentStyle}>
-                <Text numberOfLines={4} style={styles.headerTextStyle}>{ this.state.title }</Text>
-                <Text style={{ color: '#778899', fontSize: 10, paddingTop: 5 }}>{this.state.authorID}</Text>
+                <Text numberOfLines={4} style={styles.headerTextStyle}><HTMLView
+                  value={'<p>' + this.state.title + '</p>'}
+                /></Text>
+                <Text style={{ color: '#778899', fontSize: 10, paddingTop: 5, textAlign: 'right' }}>{this.state.authorID}</Text>
                 <View style={{ paddingTop: 20 }}>
                   <ShareButton></ShareButton>
                 </View>
@@ -91,7 +122,7 @@ const styles = {
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
-    paddingTop: 10
+    paddingTop: 10,
 
   },
   headerTextStyle: {
@@ -103,10 +134,36 @@ const styles = {
     marginRight: 5
   },
 
+  otherHeaderTextStyle: {
+    fontSize: 18,
+    fontWeight: '500',
+    justifyContent: 'center',
+    paddingTop: 5,
+    marginLeft: 5,
+    marginRight: 5,
+    textAlign: 'right'
+  },
+
+  descriptionTextStyle: {
+    fontSize: 14,
+    color: '#696969',
+    width: 150,
+    lineHeight: 22
+
+  },
+
   halfImageStyle: {
     width: 200,
     height: 200
   },
+
+  searchBorderStyle: {
+    borderBottomWidth: 3,
+    borderColor: '#545454',
+    height: 3,
+    width: 140,
+    marginLeft: 10
+  }
 };
 
 export default HalfPictureHeadlineArticle;

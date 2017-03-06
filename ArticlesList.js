@@ -36,16 +36,8 @@ closeActivityIndicator() {
     fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?categories=38&filter[posts_per_page]=7")
       .then((response) => response.json())
       .then((responseData) => {
-        console.log('Eyyyyyo');
-        console.log(responseData);
         // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
         this.setState({ articles: responseData, isLoading: false });
-        console.log('Yoooooo')
-        console.log(this.state)
-        //console.log('eyoooo');
-      //  console.log(this.state);
-        //console.log(this.state.articles);
-        //console.log(this.state.articles[0].title.rendered)
       })
       .catch((error) => {
         console.log(error);
@@ -53,12 +45,11 @@ closeActivityIndicator() {
       .done();
   }
   render() {
-    if (this.state.isLoading || this.state.animating) {
+    if (this.state.isLoading) {
       return (
         <View style={styles.container}>
           <Text style={{ fontSize: 20 }}>Jumbo is getting your news</Text>
           <ActivityIndicator
-            animating={this.state.animating}
             style={{ paddingTop: 15 }}
             size="large"
         />
@@ -66,14 +57,15 @@ closeActivityIndicator() {
     );
     }
     else {
+    //  console.log('EYYYYYO')
     return (
       <View>
-      <NewsList />
-      <HalfPictureHeadlineArticle article={this.state.articles[0]} />
-      <OpinionsList />
-      <HalfDescriptionArticle article={this.state.articles[1]} />
-      <ArtsList />
-      <HalfPictureHeadlineArticle article={this.state.articles[6]} />
+      <NewsList featureArticle={this.state.articles[0]}/>
+      {/*<HalfPictureHeadlineArticle article={this.state.articles[0]} />*/}
+      <OpinionsList featureArticle={this.state.articles[1]}/>
+      {/*<HalfPictureHeadlineArticle article={this.state.articles[1]} />*/}
+      <ArtsList featureArticle={this.state.articles[2]}/>
+      {/*<HalfPictureHeadlineArticle article={this.state.articles[2]} />*/}
       <SportsList />
     </View>
     );
