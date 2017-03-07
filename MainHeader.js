@@ -16,6 +16,11 @@ export default class MainHeader extends Component {
     this.fetchCCETA();
   }
 
+  componentDidMount(){
+  this.timer = setInterval(()=> this.fetchDavisETA(), 30000)
+  this.timer = setInterval(()=> this.fetchCCETA(), 30000)
+ }
+
   fetchWeather() {
     fetch("https://api.apixu.com/v1/current.json?key=00f2f2b5bd644933a43234242172702&q=Somerville")
       .then((response) => response.json())
