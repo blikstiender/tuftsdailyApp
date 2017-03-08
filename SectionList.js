@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BlurView, VibrancyView } from 'react-native-blur';
 
+import Images from 'assets';
 
 class SectionList extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class SectionList extends Component {
     const goToSports = () => Actions.sportsSection();
 
     return (
-      <Image source={require('./screenpic2.png')} style={styles.backgroundStyle}>
+      <Image source={Images.screenpic2} style={styles.backgroundStyle}>
         <BlurView blurType="xlight" blurAmount={20} >
           <View style={styles.viewStyle}>
             <View style={{marginTop: 30, marginLeft: 40}}>
@@ -32,7 +33,7 @@ class SectionList extends Component {
             <View style={styles.searchBorderStyle}>
             </View>
         <TouchableOpacity onPress={goBack} style={{position: 'absolute', right: 20, top: 40, justifyContent: 'center'}}>
-          <Image source={require('./xicon.png')} style={{ height: 20, width: 20 }} />
+          <Image source={Images.xicon} style={{ height: 20, width: 20 }} />
         </TouchableOpacity>
         <View style={{ marginTop: 20, marginLeft: 40 }}>
         <TouchableOpacity onPress={goToHome}>

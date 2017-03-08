@@ -4,6 +4,8 @@ import { Text, View, TouchableOpacity, Image, StyleSheet, Dimensions } from 'rea
 import { Actions } from 'react-native-router-flux';
 import Title from './Title'
 
+import Images from 'assets';
+
 // Make a component
 export default class MainHeader extends Component {
   constructor() {
@@ -65,7 +67,7 @@ export default class MainHeader extends Component {
       <View style={styles.container}>
         <View style={styles.topContainer}>
           <TouchableOpacity onPress={goToSectionList}>
-            <Image style={styles.hamburger} source={require('./hamburgermenu.png')} />
+            <Image style={styles.hamburger} source={Images.hamburgermenu} />
           </TouchableOpacity>
           <Title fontSize={22} />
           <TouchableOpacity>
@@ -75,7 +77,7 @@ export default class MainHeader extends Component {
         </View>
         <View style={styles.bottomContainer}>
           <DoubleLine style={styles.doubleLine}/>
-          <Image style={styles.shuttleIcon} source={require('./shuttle.png')} />
+          <Image style={styles.shuttleIcon} source={Images.shuttle} />
           <Text style={styles.shuttleInfo}>Davis {this.state.davisETA}min CC {this.state.ccETA}min</Text>
           <DoubleLine style={styles.doubleLine} />
         </View>
