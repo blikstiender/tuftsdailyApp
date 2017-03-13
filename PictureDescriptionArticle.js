@@ -5,6 +5,8 @@ import HTMLView from 'react-native-htmlview';
 import ArticleCard from './ArticleCard';
 import ArticleCardSection from './ArticleCardSection';
 
+import Images from 'assets';
+
 class PictureDescriptionArticle extends Component {
   constructor(props) {
     super(props);
@@ -88,10 +90,6 @@ return (
       </View>
       <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <Image source={require('./hearticon.png')} style={styles.iconStyle}/>
-        <Text style={{ color: '#778899', fontSize: 10 }}>21</Text>
-        </View>
       </View>
       <View style={styles.borderStyle}>
       </View>
@@ -119,10 +117,7 @@ return (
       </View>
       <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <Image source={require('./hearticon.png')} style={styles.iconStyle}/>
-        <Text style={{ color: '#778899', fontSize: 10 }}>21</Text>
-        </View>
+        
       </View>
       <View style={styles.borderStyle}>
       </View>

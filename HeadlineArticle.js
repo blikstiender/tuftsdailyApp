@@ -6,6 +6,8 @@ import ArticleCard from './ArticleCard';
 import ArticleCardSection from './ArticleCardSection';
 import ArticleListStyle from './styles';
 
+import Images from 'assets';
+
 class HeadlineArticle extends Component {
   constructor(props) {
     super(props);
@@ -66,10 +68,7 @@ render() {
       </View>
       <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <Image source={require('./hearticon.png')} style={ArticleListStyle.iconStyle}/>
-        <Text style={{ color: '#778899', fontSize: 10 }}>21</Text>
-        </View>
+        
       </View>
       <View style={ArticleListStyle.borderStyle}>
       </View>

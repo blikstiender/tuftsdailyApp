@@ -5,6 +5,9 @@ import ArticleCardArt from './ArticleCardArt';
 import ArticleCardSection from './ArticleCardSection';
 import { Actions } from 'react-native-router-flux';
 import HTMLView from 'react-native-htmlview';
+
+import Images from 'assets';
+
 var moment = require('moment');
 var REQUEST_MEDIA_URL = "https://tuftsdaily.com/wp-json/wp/v2/media/"
 
@@ -119,13 +122,13 @@ return (
     </ArticleCardArt>
   </ScrollView>
   <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
-    <Image source={require('./backarrow.png')} style={{ height: 40, width: 40}} />
+    <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
   </TouchableOpacity>
   <TouchableOpacity style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
-    <Image source={require('./blackhearticon.png')} style={{ height: 40, width: 40}} />
+    <Image source={Images.blackhearticon} style={{ height: 40, width: 40}} />
   </TouchableOpacity>
   <TouchableOpacity onPress={() => this.shareArticle()} style={{position: 'absolute', right: 100, bottom: 10, justifyContent: 'center'}}>
-    <Image source={require('./shareicon.png')} style={{ height: 40, width: 40}} />
+    <Image source={Images.shareicon} style={{ height: 40, width: 40}} />
   </TouchableOpacity>
 </View>
 )}
@@ -144,13 +147,13 @@ else{
       </ArticleCardArt>
     </ScrollView>
     <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
-      <Image source={require('./backarrow.png')} style={{ height: 40, width: 40}} />
+      <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
     </TouchableOpacity>
     <TouchableOpacity style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
-      <Image source={require('./blackhearticon.png')} style={{ height: 40, width: 40}} />
+      <Image source={Images.blackhearticon} style={{ height: 40, width: 40}} />
     </TouchableOpacity>
     <TouchableOpacity onPress={goBack} style={{position: 'absolute', right: 100, bottom: 10, justifyContent: 'center'}}>
-      <Image source={require('./shareicon.png')} style={{ height: 40, width: 40}} />
+      <Image source={Images.shareicon} style={{ height: 40, width: 40}} />
     </TouchableOpacity>
   </View>
   )

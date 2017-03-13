@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, Image, TouchableOpacity, Share } from 'react-native';
 
+import Images from 'assets';
+
 class ShareButton extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +31,7 @@ class ShareButton extends Component {
     <TouchableOpacity onPress={() => this.shareArticle()}>
         <Image
           style={styles.buttonImageStyle}
-          source={require('./shareicon.png')}
+          source={Images.shareicon}
         />
     </TouchableOpacity>
   );
