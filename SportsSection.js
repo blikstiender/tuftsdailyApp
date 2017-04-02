@@ -16,7 +16,7 @@ componentWillMount() {
 }
 
   fetchOpinions() {
-    fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?categories=27&filter[posts_per_page]=17")
+    fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?categories=27&per_page=17")
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({ articles: responseData, isLoading: false });
