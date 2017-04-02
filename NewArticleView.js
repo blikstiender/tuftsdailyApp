@@ -124,10 +124,7 @@ return (
   <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
     <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
   </TouchableOpacity>
-  <TouchableOpacity style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
-    <Image source={Images.blackhearticon} style={{ height: 40, width: 40}} />
-  </TouchableOpacity>
-  <TouchableOpacity onPress={() => this.shareArticle()} style={{position: 'absolute', right: 100, bottom: 10, justifyContent: 'center'}}>
+  <TouchableOpacity onPress={() => this.shareArticle()} style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
     <Image source={Images.shareicon} style={{ height: 40, width: 40}} />
   </TouchableOpacity>
 </View>
