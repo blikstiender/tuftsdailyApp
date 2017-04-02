@@ -16,6 +16,7 @@ class SectionList extends Component {
     const goToNews = () => Actions.newsSection();
     const goToOpinions = () => Actions.opinionSection();
     const goToSports = () => Actions.sportsSection();
+    const goToFeatures = () => Actions.featuresSection();
 
     return (
       <Image source={Images.screenpic2} style={styles.backgroundStyle}>
@@ -42,7 +43,7 @@ class SectionList extends Component {
          <TouchableOpacity onPress={goToNews} style={{ paddingTop: 25 }}>
            <Text style={styles.sectionTextStyle}>News</Text>
          </TouchableOpacity>
-         <TouchableOpacity style={{ paddingTop: 25 }}>
+         <TouchableOpacity onPress={goToFeatures} style={{ paddingTop: 25 }}>
            <Text style={styles.sectionTextStyle}>Features</Text>
          </TouchableOpacity>
         <TouchableOpacity onPress={goToOpinions} style={{ paddingTop: 25}}>

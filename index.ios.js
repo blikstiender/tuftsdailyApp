@@ -20,6 +20,7 @@ import NewArticleView from './NewArticleView';
 import NewsSection from './NewsSection';
 import OpinionSection from './OpinionSection';
 import SportsSection from './SportsSection';
+import FeaturesSection from './FeaturesSection';
 import SectionList from './SectionList';
 
 
@@ -35,6 +36,7 @@ export default class tuftsdailyApp extends Component {
           <Scene key="newsSection" component={NewsSection} title="News" hideNavBar={false} />
           <Scene key="opinionSection" component={OpinionSection} title="Opinion" hideNavBar={false} />
           <Scene key="sportsSection" component={SportsSection} title="Sports" hideNavBar={false} />
+          <Scene key="featuresSection" component={FeaturesSection} title="Features" hideNavBar={false} />
         </Scene>
       </Router>
     );

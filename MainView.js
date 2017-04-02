@@ -4,24 +4,26 @@ import MainHeader from './MainHeader';
 import SubHeader from './SubHeader';
 import { Actions } from 'react-native-router-flux';
 import ArticlesList from './ArticlesList';
+import FeaturesList from './FeaturesList';
 import FullOpinionsList from './FullOpinionsList';
 
 export default class MainView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabs: ['Today', 'Top Stories', 'Opinion'],
-      currentTab: 'Top Stories'
+      tabs: ['Today', 'Features', 'Opinion'],
+      currentTab: 'Today'
     }
   }
-  
+
   renderArticles() {
     switch (this.state.currentTab) {
       case 'Today':
       return (<ArticlesList />);
 
-      case 'Top Stories':
-      return (<ArticlesList />);
+      case 'Features':
+      console.log("yo");
+      return (<FeaturesList />);
 
       case 'Opinion':
       return (<FullOpinionsList />)
