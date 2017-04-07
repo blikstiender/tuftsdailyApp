@@ -35,7 +35,6 @@ componentWillMount() {
     );
     }
     else {
-      console.log("here");
       return (
         <ScrollView style={{ marginTop: 70 }}>
             <FirstArticleCard article={this.state.articles[0]} />
