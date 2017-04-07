@@ -22,7 +22,6 @@ export default class MainView extends Component {
       return (<ArticlesList />);
 
       case 'Features':
-      console.log("yo");
       return (<FeaturesList />);
 
       case 'Opinion':

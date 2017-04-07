@@ -33,8 +33,11 @@ export default class SubHeader extends Component {
       <View style={styles.container}>
         {this.props.tabs.map(tab => {
           return (
-            <TouchableOpacity style={this.tabStyle(tab)}
-                              onPress={e => this.tabPressed(tab, e)}>
+            <TouchableOpacity
+              style={this.tabStyle(tab)}
+              onPress={e => this.tabPressed(tab, e)}
+              key={tab}
+            >
               <Text style={styles.textStyle}>{tab}</Text>
             </TouchableOpacity>
           );

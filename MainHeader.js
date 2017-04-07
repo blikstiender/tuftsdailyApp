@@ -60,6 +60,22 @@ export default class MainHeader extends Component {
       .done();
   }
 
+  renderWeather() {
+    if (this.state.imageURL == '') {
+      return (
+        null
+      )
+    }
+    else {
+      return (
+        <View>
+        <Image style={styles.navButton} source={{uri: this.state.imageURL}} />
+          <Text style={styles.temperature}>{this.state.temp}º</Text>
+        </View>
+      )
+    }
+  }
+
   render() {
     const goToSectionList = () => Actions.sectionList();
 
@@ -70,10 +86,11 @@ export default class MainHeader extends Component {
             <Image style={styles.hamburger} source={Images.hamburgermenu} />
           </TouchableOpacity>
           <Title fontSize={22} />
-          <TouchableOpacity>
-            <Image style={styles.navButton} source={{uri: this.state.imageURL}} />
-            <Text style={styles.temperature}>{this.state.temp}º</Text>
-          </TouchableOpacity>
+          <View>
+            {this.renderWeather()}
+          {/*  <Image style={styles.navButton} source={{uri: this.state.imageURL}} />
+            <Text style={styles.temperature}>{this.state.temp}º</Text> */}
+          </View>
         </View>
         <View style={styles.bottomContainer}>
           <DoubleLine style={styles.doubleLine}/>
