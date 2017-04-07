@@ -11,7 +11,10 @@ class SectionList extends Component {
     this.state = {text: ''};
   }
   render() {
-    const goBack = () => Actions.pop();
+  //  const goBack = () => Actions.pop();
+    const goBack = () => Actions.popTo('home')
+  //  const goBack = () => console.log()
+    const goToSearch = () => Actions.searchResults(this.state.text)
     const goToHome = () => Actions.home();
     const goToNews = () => Actions.newsSection();
     const goToOpinions = () => Actions.opinionSection();
@@ -29,6 +32,8 @@ class SectionList extends Component {
         placeholder="Search"
         onChangeText={(text) => this.setState({text})}
         value={this.state.text}
+        onSubmitEditing={goToSearch}
+        returnKeyType="search"
       />
     </View>
             <View style={styles.searchBorderStyle}>

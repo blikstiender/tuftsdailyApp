@@ -9,9 +9,9 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  ScrollView
+  ScrollView,
 } from 'react-native';
-import { Router, Scene } from 'react-native-router-flux';
+import { Router, Scene, ActionConst } from 'react-native-router-flux';
 
 import MainView from './MainView';
 import FirstArticleCard from './FirstArticleCard';
@@ -22,6 +22,7 @@ import OpinionSection from './OpinionSection';
 import SportsSection from './SportsSection';
 import FeaturesSection from './FeaturesSection';
 import SectionList from './SectionList';
+import SearchResults from './SearchResults';
 
 
 export default class tuftsdailyApp extends Component {
@@ -30,13 +31,14 @@ export default class tuftsdailyApp extends Component {
     return (
       <Router>
         <Scene key="root">
-          <Scene key="home" component={MainView} title="The Tufts Daily" initial={true} hideNavBar={true} />
+          <Scene key="home" component={MainView} title="The Tufts Daily" initial={true} hideNavBar={true} type={ActionConst.POP_TO} />
           <Scene key="pageThree" component={NewArticleView} title="The Tufts Daily" hideNavBar={true} />
-          <Scene key="sectionList" component={SectionList} hideNavBar={true} />
+          <Scene key="sectionList" component={SectionList} hideNavBar={true} direction="leftToRight"/>
           <Scene key="newsSection" component={NewsSection} title="News" hideNavBar={false} />
           <Scene key="opinionSection" component={OpinionSection} title="Opinion" hideNavBar={false} />
           <Scene key="sportsSection" component={SportsSection} title="Sports" hideNavBar={false} />
           <Scene key="featuresSection" component={FeaturesSection} title="Features" hideNavBar={false} />
+          <Scene key="searchResults" component={SearchResults} title="Results" hideNavBar={true} />
         </Scene>
       </Router>
     );
