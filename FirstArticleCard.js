@@ -94,7 +94,7 @@ render() {
           </Text>
             <Text style={{ color: '#778899', fontSize: 10, fontWeight: '500', padding: 5 }}>{this.state.authorID}</Text>
           </View>
-          <View style={{ marginLeft: 5, marginRight: 5, alignItems: 'center' }}>
+          <View style={{ marginLeft: 5, marginRight: 5, alignItems: 'center', paddingBottom: 12 }}>
             <Text numberOfLines={6} style={styles.descriptionTextStyle}> <HTMLView
                 value={this.props.article.excerpt.rendered}
               />
@@ -105,8 +105,8 @@ render() {
               numberOfLines={4}
             />*/}
           </View>
-          <View style={styles.borderStyle}>
-          </View>
+      {/*    <View style={styles.borderStyle}>
+      </View>*/}
         </ArticleCardSection>
       </ArticleCard>
       </TouchableOpacity>
@@ -135,7 +135,7 @@ render() {
         </Text>
           <Text style={{ color: '#778899', fontSize: 10, fontWeight: '500', padding: 5 }}>{this.state.authorID}</Text>
         </View>
-        <View style={{ marginLeft: 5, marginRight: 5, alignItems: 'center' }}>
+        <View style={{ marginLeft: 5, marginRight: 5, alignItems: 'center', paddingBottom: 12 }}>
           <Text numberOfLines={6} style={styles.descriptionTextStyle}> <HTMLView
               value={this.props.article.excerpt.rendered}
             />
@@ -146,8 +146,8 @@ render() {
             numberOfLines={4}
           />*/}
         </View>
-        <View style={styles.borderStyle}>
-        </View>
+      {/*  <View style={styles.borderStyle}>
+      </View>*/}
       </ArticleCardSection>
     </ArticleCard>
     </TouchableOpacity>
