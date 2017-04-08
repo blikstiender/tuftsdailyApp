@@ -11,7 +11,7 @@ import Images from 'assets';
 class HeadlineArticle extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: props.article.title.rendered, authorID: props.article.author, isLoading: true};
+    this.state = {title: props.article.title.rendered, authorID: props.article.author, isLoading: true, isLast: props.isLast};
   }
 
   componentWillMount() {
@@ -68,9 +68,9 @@ render() {
       </View>
       <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>
-        
+
       </View>
-      <View style={ArticleListStyle.borderStyle}>
+      <View style={ this.state.isLast ? { paddingBottom: 8 } : ArticleListStyle.borderStyle }>
       </View>
     </ArticleCardSection>
     </TouchableOpacity>
