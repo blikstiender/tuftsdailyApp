@@ -31,13 +31,13 @@ export default class tuftsdailyApp extends Component {
     return (
       <Router>
         <Scene key="root">
-          <Scene key="home" component={MainView} title="The Tufts Daily" initial={true} hideNavBar={true} type={ActionConst.POP_TO} />
+          <Scene key="home" component={MainView} title="The Tufts Daily" initial={true} hideNavBar={true} />
           <Scene key="pageThree" component={NewArticleView} title="The Tufts Daily" hideNavBar={true} />
           <Scene key="sectionList" component={SectionList} hideNavBar={true} direction="leftToRight"/>
-          <Scene key="newsSection" component={NewsSection} title="News" hideNavBar={false} />
-          <Scene key="opinionSection" component={OpinionSection} title="Opinion" hideNavBar={false} />
-          <Scene key="sportsSection" component={SportsSection} title="Sports" hideNavBar={false} />
-          <Scene key="featuresSection" component={FeaturesSection} title="Features" hideNavBar={false} />
+          <Scene key="newsSection" component={NewsSection} title="News" hideNavBar={true} />
+          <Scene key="opinionSection" component={OpinionSection} title="Opinion" hideNavBar={true} />
+          <Scene key="sportsSection" component={SportsSection} title="Sports" hideNavBar={true} />
+          <Scene key="featuresSection" component={FeaturesSection} title="Features" hideNavBar={true} />
           <Scene key="searchResults" component={SearchResults} title="Results" hideNavBar={true} />
         </Scene>
       </Router>

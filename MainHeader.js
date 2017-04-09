@@ -90,8 +90,6 @@ export default class MainHeader extends Component {
           <Title page = {this.state.page} fontSize={22} />
           <View>
             {this.renderWeather()}
-          {/*  <Image style={styles.navButton} source={{uri: this.state.imageURL}} />
-            <Text style={styles.temperature}>{this.state.temp}º</Text> */}
           </View>
         </View>
         <View style={styles.bottomContainer}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import ArticleCard from './ArticleCard';
 import PictureDescriptionArticle from './PictureDescriptionArticle';
 import HeadlineArticle from './HeadlineArticle';
@@ -35,6 +36,7 @@ async fetchNews() {
   }
 
   render() {
+    const goBack = () => Actions.pop();
     if (this.state.isLoading) {
       return (
       <Text></Text>
@@ -42,7 +44,9 @@ async fetchNews() {
     }
     else {
       return (
-        <ScrollView style={{ marginTop: 70 }}>
+      <View>
+        <ScrollView>
+        <MainHeader page = 'news' />
             <FirstArticleCard article={this.state.articles[0]} />
             <ArticleCard>
               <PictureDescriptionArticle article={this.state.articles[1]}/>
@@ -59,16 +63,19 @@ async fetchNews() {
         <ArticleCard>
           <PictureDescriptionArticle article={this.state.articles[9]}/>
           <HeadlineArticle article={this.state.articles[10]} />
-          <HeadlineArticle article={this.state.articles[11]} isLast={true}/>
+          <HeadlineArticle article={this.state.articles[11]} isLast={true} />
       </ArticleCard>
       <FirstArticleCard article={this.state.articles[12]} />
       <ArticleCard>
         <PictureDescriptionArticle article={this.state.articles[13]}/>
         <HeadlineArticle article={this.state.articles[14]} />
-        <HeadlineArticle article={this.state.articles[15]} isLast={true}/>
+        <HeadlineArticle article={this.state.articles[15]} isLast={true} />
     </ArticleCard>
-
         </ScrollView>
+        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 20, justifyContent: 'center'}}>
+          <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
+        </TouchableOpacity>
+    </View>
       );
     }
   }

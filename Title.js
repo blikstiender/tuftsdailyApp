@@ -10,6 +10,7 @@ export default class Title extends Component {
     this.state = {
       smallSize: fontSize,
       bigSize: fontSize * 1.3,
+      page: this.props.page ? this.props.page : 'home'
     }
 
     styles = StyleSheet.create({
@@ -31,6 +32,7 @@ export default class Title extends Component {
     });
   }
   render() {
+    if (this.state.page == 'home') {
     return (
       <View style={styles.container}>
         <Text style={ styles.big }>T</Text>
@@ -43,5 +45,38 @@ export default class Title extends Component {
         <Text style={ styles.small }>AILY </Text>
       </View>
       )
+    }
+    else if (this.state.page == 'news') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>N</Text>
+        <Text style={ styles.small }>EWS </Text>
+      </View>
+    )
+    }
+    else if (this.state.page == 'features') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>F</Text>
+        <Text style={ styles.small }>EATURES </Text>
+      </View>
+    )
+    }
+    else if (this.state.page == 'opinion') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>O</Text>
+        <Text style={ styles.small }>PINION </Text>
+      </View>
+    )
+    }
+    else if (this.state.page == 'sports') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>S</Text>
+        <Text style={ styles.small }>PORTS </Text>
+      </View>
+    )
+    }
   }
 }

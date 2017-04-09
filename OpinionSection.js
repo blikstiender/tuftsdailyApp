@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import ArticleCard from './ArticleCard';
 import PictureDescriptionArticle from './PictureDescriptionArticle';
 import HeadlineArticle from './HeadlineArticle';
@@ -37,6 +38,7 @@ async fetchOpinions() {
 
 
   render() {
+    const goBack = () => Actions.pop();
     if (this.state.isLoading) {
       return (
         <Text></Text>
@@ -44,7 +46,9 @@ async fetchOpinions() {
     }
     else {
       return (
-        <ScrollView style={{ marginTop: 70 }}>
+        <View>
+        <ScrollView>
+          <MainHeader page = 'opinion' />
           <OtherFirstArticleCard article={this.state.articles[0]} />
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[1]}/>
@@ -76,6 +80,10 @@ async fetchOpinions() {
             <HeadlineArticle article={this.state.articles[19]} isLast={true}/>
           </ArticleCard>
         </ScrollView>
+        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 20, justifyContent: 'center'}}>
+          <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
+        </TouchableOpacity>
+      </View>
       );
     }
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Image } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import ArticleCard from './ArticleCard';
 import PictureHeadlineArticle from './PictureHeadlineArticle';
 import HeadlineArticle from './HeadlineArticle';
@@ -35,6 +36,7 @@ async fetchSports() {
   }
 
   render() {
+    const goBack = () => Actions.pop();
     if (this.state.isLoading) {
       return (
         <Text></Text>
@@ -42,33 +44,39 @@ async fetchSports() {
     }
     else {
       return (
-        <ScrollView style={{ marginTop: 70}}>
+        <View>
+        <ScrollView>
+          <MainHeader page='sports'/>
           <FirstArticleCard article= {this.state.articles[0]} />
           <ArticleCard>
             <PictureHeadlineArticle article={this.state.articles[1]} />
             <HeadlineArticle article={this.state.articles[2]} />
-            <HeadlineArticle article={this.state.articles[3]} />
+            <HeadlineArticle article={this.state.articles[3]}/>
             <PictureHeadlineArticle article={this.state.articles[4]} isLast={true}/>
           </ArticleCard>
           <ArticleCard>
             <PictureHeadlineArticle article={this.state.articles[5]} />
             <HeadlineArticle article={this.state.articles[6]} />
-            <HeadlineArticle article={this.state.articles[7]} />
+            <HeadlineArticle article={this.state.articles[7]}/>
             <PictureHeadlineArticle article={this.state.articles[8]} isLast={true}/>
           </ArticleCard>
           <ArticleCard>
             <PictureHeadlineArticle article={this.state.articles[9]} />
             <HeadlineArticle article={this.state.articles[10]} />
-            <HeadlineArticle article={this.state.articles[11]} />
+            <HeadlineArticle article={this.state.articles[11]}/>
             <PictureHeadlineArticle article={this.state.articles[12]} isLast={true}/>
           </ArticleCard>
           <ArticleCard>
             <PictureHeadlineArticle article={this.state.articles[13]} />
             <HeadlineArticle article={this.state.articles[14]} />
-              <HeadlineArticle article={this.state.articles[15]} />
+              <HeadlineArticle article={this.state.articles[15]}/>
             <PictureHeadlineArticle article={this.state.articles[16]} isLast={true}/>
           </ArticleCard>
         </ScrollView>
+        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 20, justifyContent: 'center'}}>
+          <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
+        </TouchableOpacity>
+      </View>
       );
     }
   }
