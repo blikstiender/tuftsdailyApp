@@ -11,10 +11,11 @@ class SectionList extends Component {
     this.state = {text: ''};
   }
   render() {
-  //  const goBack = () => Actions.pop();
-    const goBack = () => Actions.popTo('home')
-  //  const goBack = () => console.log()
-    const goToSearch = () => Actions.searchResults(this.state.text)
+    const goBack = () => Actions.pop();
+    const goToSearch = () => {
+      this.setState({ text: '' })
+      Actions.searchResults(this.state.text);
+    }
     const goToHome = () => Actions.home();
     const goToNews = () => Actions.newsSection();
     const goToOpinions = () => Actions.opinionSection();
@@ -26,7 +27,6 @@ class SectionList extends Component {
         <BlurView blurType="xlight" blurAmount={20} >
           <View style={styles.viewStyle}>
             <View style={{marginTop: 30, marginLeft: 40}}>
-            {/*<Text style={styles.searchTextStyle}>Search</Text>*/}
             <TextInput
         style={{height: 40, width: 220}}
         placeholder="Search"

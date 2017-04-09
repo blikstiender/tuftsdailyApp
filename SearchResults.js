@@ -9,7 +9,7 @@ import {
   TextInput
 } from 'react-native';
 
-import { Actions } from 'react-native-router-flux';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import HeadlineArticle from './HeadlineArticle';
 import SearchResultArticle from './SearchResultArticle';
 import ArticleCard from './ArticleCard';
@@ -18,39 +18,34 @@ import Images from 'assets';
 class SearchResults extends Component {
   constructor(props) {
     super(props);
-    this.state = { articles: [], query: props.data, isLoading: true, animating: true, numArticles: 0, text: props.data };
+    this.state = { articles: [], query: props.data, isLoading: true, animating: true, numArticles: 0, text: props.data, };
 }
 
 componentWillMount() {
-//  console.log('Will mount')
+this.Mounted = true;
   if (this.state.query) {
     this.fetchResults();
   }
 }
 
-closeActivityIndicator() {
-      setTimeout(() => {
-         this.setState({animating: false});
-      }, 2000);
-   }
-   componentDidMount() {
-      this.closeActivityIndicator();
+   componentWillUnmount() {
+     this.Mounted = false;
    }
 
-  fetchResults() {
-    fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?search=" + this.state.query+"&per_page=20")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ articles: responseData, isLoading: false, numArticles: responseData.length });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+   async fetchResults() {
+       try {
+         let response = await fetch('https://tuftsdaily.com/wp-json/wp/v2/posts?search=' + this.state.query+'&per_page=20');
+         let responseJson = await response.json();
+         if (this.Mounted) {
+           this.setState({ articles: responseJson, numArticles: responseJson.length, isLoading: false});
+         }
+       } catch(error) {
+         console.error(error);
+       }
+     }
 
   renderResults() {
-    console.log(this.state.articles)
+    //console.log(this.state.articles)
     if (this.state.numArticles == 0) {
       return (
         <View style={{ marginTop: 200, alignItems: 'center' }}>
@@ -65,10 +60,17 @@ closeActivityIndicator() {
     }
   }
 
+  causeRender() {
+    console.log(this.state);
+    this.setState({ query: this.state.text, isLoading: true }, function() {
+      this.fetchResults();
+    })
+
+  }
+
   render() {
     const goBack = () => Actions.pop();
-    const goToSearch = () => Actions.searchResults(this.state.text);
-    const goToSectionList = () => Actions.sectionList();
+
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
@@ -77,6 +79,9 @@ closeActivityIndicator() {
             style={{ paddingTop: 15 }}
             size="large"
         />
+        <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 20, justifyContent: 'center'}}>
+          <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
+        </TouchableOpacity>
         </View>
     );
     }
@@ -90,7 +95,7 @@ closeActivityIndicator() {
     placeholder="Search"
     onChangeText={(text) => this.setState({text})}
     value={this.state.text}
-    onSubmitEditing={goToSearch}
+    onSubmitEditing={() => this.causeRender()}
     clearButtonMode="always"
     returnKeyType="search"
   />
@@ -101,7 +106,7 @@ closeActivityIndicator() {
       </View>
         {this.renderResults()}
       </ScrollView>
-      <TouchableOpacity /*onPress={goBack}*/ onPress={goToSectionList} style={{position: 'absolute', left: 30, bottom: 20, justifyContent: 'center'}}>
+      <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 20, justifyContent: 'center'}}>
         <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
       </TouchableOpacity>
     </View>

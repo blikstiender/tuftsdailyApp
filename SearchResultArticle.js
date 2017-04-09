@@ -8,13 +8,15 @@ import ShareButton from './ShareButton';
 import ArticleListStyle from './styles';
 var moment = require('moment');
 
-class HalfPictureHeadlineArticle extends Component {
+
+class SearchResultArticle extends Component {
   constructor(props) {
     super(props);
     this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true, date: props.article.date};
   }
 
   componentWillMount() {
+    this.Mounted = true;
     this.fetchAuthor();
     this.parseDate();
     if (this.props.article.featured_media == 0) {
@@ -26,41 +28,46 @@ class HalfPictureHeadlineArticle extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.Mounted = false;
+  }
+
   setURL() {
     return ('https://tuftsdaily.com/wp-json/wp/v2/media/' + (this.props.article.featured_media).toString());
   }
 
-  fetchImage() {
-    fetch(this.setURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ imageID: responseData.media_details.sizes.medium_large.source_url, isLoading: false });
-      })
-      .catch((error) => {
-      })
-      .done();
-  }
+  async fetchImage() {
+      try {
+        let response = await fetch(this.setURL());
+        let responseJson = await response.json();
+        if (this.Mounted) {
+          this.setState({ imageID: responseJson.media_details.sizes.medium.source_url, isLoading: false });
+        }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
   setAuthorURL() {
     return ('https://tuftsdaily.com/wp-json/wp/v2/users/' + this.props.article.author)
   }
 
-  fetchAuthor() {
-    fetch(this.setAuthorURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ authorID: responseData.name,  });
-      })
-      .catch((error) => {
-        console.log('Error fetching');
-      })
-      .done();
-  }
+  async fetchAuthor() {
+      try {
+        let response = await fetch(this.setAuthorURL());
+        let responseJson = await response.json();
+        if (this.Mounted) {
+        this.setState({ authorID: responseJson.name });
+      }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
   parseDate(){
     var fdate = moment(this.state.date, "YYYY-MM-DD").format("MMM D YYYY");
     this.setState({date: fdate})
-    //console.log(this.state);
+
   }
 
   render() {
@@ -92,7 +99,6 @@ class HalfPictureHeadlineArticle extends Component {
 
     }
     else {
-      console.log('sup')
       return (
         <TouchableOpacity style={{  paddingTop: 10 }} onPress={goToArticle}>
             <ArticleCardSection style={{ justifyContent: 'center' }}>
@@ -169,4 +175,4 @@ const styles = {
   }
 };
 
-export default HalfPictureHeadlineArticle;
+export default SearchResultArticle;
