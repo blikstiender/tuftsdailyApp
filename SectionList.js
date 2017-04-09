@@ -23,6 +23,7 @@ class SectionList extends Component {
     const goToSports = () => Actions.sportsSection();
     const goToFeatures = () => Actions.featuresSection();
     const goToMenus =() => Actions.menus();
+    const goToShuttle = () => Actions.shuttle();
 
     return (
       <Image source={Images.screenpic2} style={styles.backgroundStyle}>
@@ -67,7 +68,7 @@ class SectionList extends Component {
         <TouchableOpacity onPress={goToMenus} style={{ paddingTop: 10 }}>
           <Text style={styles.otherTextStyle}>Menu</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ paddingTop: 40, paddingBottom: 10 }}>
+        <TouchableOpacity onPress={goToShuttle} style={{ paddingTop: 40, paddingBottom: 10 }}>
           <Text style={styles.otherTextStyle}>Shuttle</Text>
         </TouchableOpacity>
         <View style={styles.borderStyle}>

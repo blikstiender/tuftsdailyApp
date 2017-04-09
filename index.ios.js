@@ -25,6 +25,7 @@ import FeaturesSection from './FeaturesSection';
 import SectionList from './SectionList';
 import SearchResults from './SearchResults';
 import MenuPage from './MenuPage';
+import ShuttlePage from './ShuttlePage';
 
 
 export default class tuftsdailyApp extends Component {
@@ -43,6 +44,7 @@ export default class tuftsdailyApp extends Component {
           <Scene key="featuresSection" component={FeaturesSection} title="Features" hideNavBar={true} />
           <Scene key="searchResults" component={SearchResults} title="Results" hideNavBar={true} />
           <Scene key="menus" component={MenuPage} title="Menus" hideNavBar={true} />
+          <Scene key="shuttle" component={ShuttlePage} title="Shuttle" hideNavBar={true} />
         </Scene>
       </Router>
     );
