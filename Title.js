@@ -70,6 +70,14 @@ export default class Title extends Component {
       </View>
     )
     }
+    else if (this.state.page == 'arts') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>A</Text>
+        <Text style={ styles.small }>RTS </Text>
+      </View>
+    )
+    }
     else if (this.state.page == 'sports') {
       return (
       <View style={styles.container}>
@@ -77,6 +85,28 @@ export default class Title extends Component {
         <Text style={ styles.small }>PORTS </Text>
       </View>
     )
+    }
+    else if (this.state.page == 'menus') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>M</Text>
+        <Text style={ styles.small }>ENUS </Text>
+      </View>
+    )
+    }
+    else {
+      return (
+        <View style={styles.container}>
+          <Text style={ styles.big }>T</Text>
+          <Text style={ styles.small }>HE </Text>
+
+          <Text style={ styles.big }>T</Text>
+          <Text style={ styles.small }>UFTS </Text>
+
+          <Text style={ styles.big }>D</Text>
+          <Text style={ styles.small }>AILY </Text>
+        </View>
+        )
     }
   }
 }

@@ -1,56 +1,273 @@
 'use strict';
- 
-import React, { Component } from 'react'
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableHighlight,
-  ActivityIndicator,
-  Image
-} from 'react-native';
+import React, { Component } from 'react';
+import { ScrollView, View, StyleSheet, Text, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
+import MainHeader from './MainHeader';
+import SubHeader from './SubHeader';
+import { Actions } from 'react-native-router-flux';
 import MenuSection from './MenuSection';
+import MealHeader from './MealHeader';
+import ArticleCard from './ArticleCard';
+var moment = require('moment');
+import Images from './assets';
 
+var Dimensions = require('Dimensions');
+var windowSize = Dimensions.get('window');
 
+export default class MenuPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      diningHallTabs: ['Dewick', 'Carmichael'],
+      mealTabs: ['BREAKFAST', 'LUNCH', 'DINNER'],
+      currentDiningHallTab: 'Dewick',
+      currentMealTab: moment().hour() < 11 ? 'BREAKFAST' : moment().hour() < 16 ? 'LUNCH' : 'DINNER',
+      food: [],
+      isLoading: true,
+      animating: true
+    }
+  }
 
-var styles = StyleSheet.create({
-  description: {
-    marginBottom: 20,
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#000000'
-  },
+  componentWillMount() {
+    this.Mounted = true;
+    this.fetchMenu();
+
+  }
+
+  componentWillUnmount() {
+    this.Mounted = false;
+  }
+
+  closeActivityIndicator() {
+        setTimeout(() => {
+           this.setState({animating: false});
+        }, 2000);
+     }
+     componentDidMount() {
+        this.closeActivityIndicator();
+     }
+
+     async fetchMenu() {
+         try {
+           let response = await fetch('https://tuftsdaily.com/wp-json/pounce-json/dining');
+           let responseJson = await response.json();
+           if (this.Mounted) {
+             this.setState({ food: responseJson, isLoading: false });
+           }
+         } catch(error) {
+           console.error(error);
+         }
+       }
+
+  renderFood() {
+    switch (this.state.currentDiningHallTab) {
+  case 'Dewick':
+    switch (moment().day()) {
+      case 0:
+        switch (this.state.currentMealTab) {
+          case 'BREAKFAST':
+            return (
+              <View style={{ height: windowSize.height, }}>
+                <Text style={{ paddingLeft: 10, fontSize: 16, textAlign: 'center', paddingTop: 150 }}>No breakfast on Sundays</Text>
+              </View>
+            )
+
+            case 'LUNCH':
+            return this.state.food[0].meals[0].items.map(foods =>
+              <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+                <MenuSection title={foods.section_name} foods={foods.food_items} />
+              </View>
+            );
+            case 'DINNER':
+            return this.state.food[0].meals[1].items.map(foods =>
+              <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+                <MenuSection title={foods.section_name} foods={foods.food_items} />
+              </View>
+            );
+    }
+    default:
+    switch (this.state.currentMealTab) {
+      case 'BREAKFAST':
+        return this.state.food[0].meals[0].items.map(foods =>
+          <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+            <MenuSection title={foods.section_name} foods={foods.food_items} />
+          </View>
+        );
+        case 'LUNCH':
+        return this.state.food[0].meals[1].items.map(foods =>
+          <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+            <MenuSection title={foods.section_name} foods={foods.food_items} />
+          </View>
+        );
+        case 'DINNER':
+        return this.state.food[0].meals[2].items.map(foods =>
+          <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+            <MenuSection title={foods.section_name} foods={foods.food_items} />
+          </View>
+        );
+      }
+    }
+
+      case 'Carmichael':
+      switch (moment().day()) {
+        case 6:
+          switch (this.state.currentMealTab) {
+            case 'BREAKFAST':
+              return (
+                <View style={{ height: windowSize.height, }}>
+                  <Text style={{ paddingLeft: 10, fontSize: 16, textAlign: 'center', paddingTop: 150 }}>No breakfast on Saturdays</Text>
+                </View>
+              )
+
+              case 'LUNCH':
+              return this.state.food[1].meals[0].items.map(foods =>
+                <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+                  <MenuSection title={foods.section_name} foods={foods.food_items} />
+                </View>
+              );
+              case 'DINNER':
+              return this.state.food[1].meals[1].items.map(foods =>
+                <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+                  <MenuSection title={foods.section_name} foods={foods.food_items} />
+                </View>
+              );
+      }
+      default:
+      switch (this.state.currentMealTab) {
+        case 'BREAKFAST':
+          return this.state.food[1].meals[0].items.map(foods =>
+            <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+              <MenuSection title={foods.section_name} foods={foods.food_items} />
+            </View>
+          );
+          case 'LUNCH':
+          return this.state.food[1].meals[1].items.map(foods =>
+            <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+              <MenuSection title={foods.section_name} foods={foods.food_items} />
+            </View>
+          );
+          case 'DINNER':
+          return this.state.food[1].meals[2].items.map(foods =>
+            <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+              <MenuSection title={foods.section_name} foods={foods.food_items} />
+            </View>
+          );
+        }
+
+    }
+
+  }
+}
+
+  handleDiningHallTabPressed(tab, e) {
+    this.setState({
+      currentDiningHallTab: tab,
+    });
+  }
+
+  handleMealTabPressed(tab, e) {
+    this.setState({
+      currentMealTab: tab,
+    });
+  }
+
+  render() {
+    const goBack = () => Actions.pop();
+    // const goToPageTwo = () => Actions.fullOpinionsList();
+    if (this.state.isLoading) {
+    //  console.log('waddup')
+      return (
+        <View style={styles.container}>
+          <Text style={{ fontSize: 20 }}>Jumbo is getting your menus</Text>
+          <ActivityIndicator
+            style={{ paddingTop: 15 }}
+            size="large"
+        />
+        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 50, justifyContent: 'center'}}>
+          <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
+        </TouchableOpacity>
+        </View>
+      )
+    }
+    //console.log('Hi')
+    return (
+      <View style={{ flex: 2, backgroundColor: '#f7f7f7' }}>
+        <ScrollView
+          style={styles.background}
+          stickyHeaderIndices={[0]}
+        >
+          <View style={{ backgroundColor: '#f7f7f7'}}>
+          <MainHeader page='menus'/>
+          <SubHeader tabs={this.state.diningHallTabs}
+                     currentTab={this.state.currentDiningHallTab}
+                     onTabPressed={(tab, e) => this.handleDiningHallTabPressed(tab, e)}/>
+          </View>
+          <ArticleCard>
+            <View style={{ backgroundColor: 'white'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image source={require('./assets/images/forkknife.jpg')} style={{ height: 24, width: 24, marginLeft: 10 }} />
+                <Text style={{ fontSize: 20, fontFamily: 'Superclarendon', paddingLeft: 10, paddingTop: 10 }}>TODAY</Text>
+              </View>
+              <View style={styles.borderStyle} />
+            </View>
+            <View style={{ paddingTop: 10, backgroundColor: 'white' }}>
+          {this.renderFood()}
+        </View>
+        </ArticleCard>
+        </ScrollView>
+        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 50, justifyContent: 'center'}}>
+          <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
+        </TouchableOpacity>
+        <View style={{ backgroundColor: 'white'}}>
+        <MealHeader tabs={this.state.mealTabs}
+                   currentTab={this.state.currentMealTab}
+                   onTabPressed={(tab, e) => this.handleMealTabPressed(tab, e)}/>
+      </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
   container: {
-    padding: 30,
-    marginTop: 65,
-    alignItems: 'center'
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
   },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+  background: {
+    backgroundColor: '#F8F8F8',
+    flexDirection: 'column'
+  },
+  navBar: {
+    backgroundColor: '#0000FF',
+  },
+  borderStyle: {
+    paddingTop: 10,
+    //paddingBottom: 10,
+    borderBottomWidth: 2,
+    borderColor: 'black',
+    height: 5,
+    marginLeft: 10,
+    marginRight: 10
 
+  }
 });
 
 
-function menuList(items) {
-  return items.map(x => (<li key={x}>{x}</li>));
-}
-
-function MenuCategory(menuCat, menuObject) {
-  console.log("Rendering: ",menuObject[menuCat]);
-  return (
-    <Text>
-      <h1>{menuCat}</h1>
-      <ul>
-        <menuList items={menuObject[menuCat]} />
-      </ul>
-    </Text>
-  )
-}
-
-
-class MenuPage extends Component {
+/*class Menus extends Component {
   constructor() {
     super();
-    this.state = { menu: [], mealSections: [], isLoading: true };
+    this.state = { dewickBreakfast: [], isLoading: true };
 
   }
 
@@ -60,11 +277,12 @@ class MenuPage extends Component {
   }
 
   fetchMenu() {
-    fetch("https://tuftsdiningdata.herokuapp.com/menus/carm/27/2/2017")
+    fetch("https://tuftsdaily.com/wp-json/pounce-json/dining?date=4%2F8%2F2017")
     .then((response) => response.json())
-    .then((responseData) => { this.setState({ menu: responseData.data, breakfastEntrees: responseData.data.Breakfast['BREAKFAST ENTREES'], mealSections: responseData.data.Breakfast, isLoading: false });
+    .then((responseData) => { this.setState({ food: responseData isLoading: false });
+      console.log('yooooo')
       console.log(this.state);
-      console.log(Object.keys(responseData.data.Breakfast).length)
+    //  console.log(Object.keys(responseData.data.Breakfast).length)
   })
     .catch((error) => {
       console.log(error);
@@ -72,103 +290,27 @@ class MenuPage extends Component {
     .done();
       }
 
-renderBreakfastEntrees(title) {
-  //console.log(this.state.menu.Breakfast[{title}].length)
-  console.log(title)
-  return this.state.menu.Breakfast[{title}].map(food => {
-    return <View style={{ height: 20, width: 200 }} key={food}><Text>{food}</Text></View>
-  })
-}
-
-renderMenuHeader(title) {
-  console.log(title)
-  var thing = title;
-  return (
-    <View>
-      <Text>
-        {title}
-      </Text>
-    </View>
-    )
-}
-
-renderBreakfast() {
-  var len = Object.keys(this.state.menu.Breakfast).length;
-  console.log(Object.keys(this.state.menu.Breakfast)[0])  
-    for (var i = 0; i < len; i++) {
-     return (this.renderMenuHeader(Object.keys(this.state.menu.Breakfast)[i]))
+    renderBreakfast() {
+      return this.state.dewickBreakfast.map(foods =>
+        <View key={foods.section_name} style={{ paddingBottom: 10 }}>
+          <MenuSection title={foods.section_name} foods={foods.food_items} />
+        </View>
+      );
     }
-}
-
-renderBreakfast2() {
-  return (Object.keys(this.state.mealSections).map(foods=> {
-    return <MenuSection key={foods[0]} foods = {foods} />
-  })
-  )
-}
-
-renderShit() {
-  var i = 0;
-  return (Object.keys(this.state.menu.Breakfast)).map(items => {
-    i = i + 1;
-    return <View key={items}><Text>{items}</Text><View>{this.renderBreakfastEntrees(Object.keys(this.state.menu.Breakfast)[i])}</View></View>
-  })
-}
-
-  render() {
-      const nums = [1, 2, 3]
-
+    render () {
       if (this.state.isLoading) {
+        console.log('waddup')
         return (
-          <Text>Loading...</Text>
-          )
+          <Text>Hi</Text>
+        )
       }
-    return (
-      <View style={styles.container}>
-
-        <Text style={styles.description}>
-        Breakfast Entrees
-        </Text>
-       {/* <View>{this.renderBreakfastEntrees()}</View>
-        <View>{this.renderBreakfast()}</View>
-        <View>{this.renderShit()}</View>*/}
-        {this.renderBreakfast2()}
-        <Text style={styles.description}>
-
-        </Text>
-                <Text style={styles.description}>
-          This is a FOOD Page
-        </Text>
-        <Text style={styles.description}>
-          Miscellaneous Pages will have 
-        </Text>
-                <Text style={styles.description}>
-          This is a FOOD Page
-        </Text>
-        <Text style={styles.description}>
-          Miscellaneous Pages will have 
-        </Text>
-                <Text style={styles.description}>
-          This is a FOOD Page
-        </Text>
-        <Text style={styles.description}>
-          Miscellaneous Pages will have 
-        </Text>
-                <Text style={styles.description}>
-          This is a FOOD Page
-        </Text>
-        <Text style={styles.description}>
-          Miscellaneous Pages will have 
-        </Text>
-
+      console.log(this.state.dewickBreakfast)
+      return (
+        <View style={{ paddingTop: 100 }}>
+        {this.renderBreakfast()}
       </View>
-    );
+      )
+    }
   }
-}
 
-export default MenuPage;
-
-
-
-
-
+    export default Menus;*/
