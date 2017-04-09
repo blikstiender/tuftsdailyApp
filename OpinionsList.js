@@ -14,21 +14,25 @@ class OpinionsList extends Component {
 }
 
 componentWillMount() {
+  this.Mounted = true;
   this.fetchOpinions();
 }
 
-  fetchOpinions() {
-    fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?categories=24&filter[posts_per_page]=10")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ articles: responseData, isLoading: false });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+componentWillUnmount() {
+  this.Mounted = false;
+}
 
+async fetchOpinions() {
+    try {
+      let response = await fetch('https://tuftsdaily.com/wp-json/wp/v2/posts?categories=24&per_page=5');
+      let responseJson = await response.json();
+      if (this.Mounted) {
+        this.setState({ articles: responseJson, isLoading: false });
+      }
+    } catch(error) {
+      console.error(error);
+    }
+  }
 
   render() {
     const goToOpinions = () => Actions.opinionSection();

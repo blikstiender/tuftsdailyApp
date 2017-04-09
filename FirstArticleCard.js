@@ -8,19 +8,22 @@ import ArticleCard from './ArticleCard';
 class FirstArticleCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true};
+    this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true, };
   }
 
   componentWillMount() {
+    this.Mounted = true;
     this.fetchAuthor();
     if (this.props.article.featured_media == 0) {
       this.setState({ title: this.props.article.title.rendered, imageID: '', isLoading: false})
-    //  console.log("YAYAYAYYYYA")
     }
     else {
-    //  console.log("KKKKKKKK")
       this.fetchImage();
     }
+  }
+
+  componentWillUnmount() {
+    this.Mounted = false;
   }
 
   setURL() {
@@ -28,51 +31,35 @@ class FirstArticleCard extends Component {
     return ('https://tuftsdaily.com/wp-json/wp/v2/media/' + (this.props.article.featured_media).toString());
   }
 
-  fetchImage() {
-  //  console.log("In fetch image")
-    fetch(this.setURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
-      //  console.log('Fetching image')
-      //console.log(responseData)
-        this.setState({ imageID: responseData.media_details.sizes.medium.source_url, isLoading: false });
-      //  console.log("OGOGOGOGOG")
-
-        //console.log(this.state.articles);
-        //console.log(this.state.articles[0].title.rendered)
-      })
-      .catch((error) => {
-       console.log(error);
-      })
-      .done();
-  }
+  async fetchImage() {
+      try {
+        let response = await fetch(this.setURL());
+        let responseJson = await response.json();
+        if (this.Mounted) {
+          this.setState({ imageID: responseJson.media_details.sizes.medium.source_url, isLoading: false });
+        }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
   setAuthorURL() {
     return ('https://tuftsdaily.com/wp-json/wp/v2/users/' + this.props.article.author)
   }
 
-  fetchAuthor() {
-    fetch(this.setAuthorURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
-      //  console.log('Fetching author')
-        this.setState({ authorID: responseData.name});
-      //  console.log(responseData)
-
-        //console.log(this.state.articles);
-        //console.log(this.state.articles[0].title.rendered)
-      })
-      .catch((error) => {
-        console.log('Error fetching');
-      })
-      .done();
-  }
-
+  async fetchAuthor() {
+      try {
+        let response = await fetch(this.setAuthorURL());
+        let responseJson = await response.json();
+        if (this.Mounted) {
+        this.setState({ authorID: responseJson.name });
+      }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
 render() {
-  //console.log("FIRST ARTICLE CARD")
   const goToArticle = () => Actions.pageThree({ article: this.props.article });
   if (this.state.isLoading) {
     return (
@@ -80,13 +67,11 @@ render() {
     )
   }
   else if (this.props.article.featured_media == 0 ) {
-  //  console.log("YOOOO")
     return (
       <TouchableOpacity onPress={goToArticle}>
         <ArticleCard>
         <ArticleCardSection style={styles.headerContentStyle}>
           <View style={{  alignItems: 'center', marginTop: 10 }}>
-          {/*  <Text style={styles.headerTextStyle}>{this.state.title}</Text>*/}
           <Text style={styles.headerTextStyle}>
           <HTMLView
             value={'<p>' + this.props.article.title.rendered + '</p>'}
@@ -99,14 +84,7 @@ render() {
                 value={this.props.article.excerpt.rendered}
               />
             </Text>
-          {/*  <HTMLView
-              value={this.props.article.excerpt.rendered}
-              stylesheet={styles.descriptionCSS}
-              numberOfLines={4}
-            />*/}
           </View>
-      {/*    <View style={styles.borderStyle}>
-      </View>*/}
         </ArticleCardSection>
       </ArticleCard>
       </TouchableOpacity>
@@ -114,7 +92,6 @@ render() {
 
   }
   else {
-  //  console.log("WOOOOOO")
   return (
     <TouchableOpacity onPress={goToArticle}>
       <ArticleCard>
@@ -127,7 +104,6 @@ render() {
           />
         </View>
         <View style={{  alignItems: 'center' }}>
-        {/*  <Text style={styles.headerTextStyle}>{this.state.title}</Text>*/}
         <Text style={styles.headerTextStyle}>
         <HTMLView
           value={'<p>' + this.props.article.title.rendered+ '</p>'}
@@ -140,14 +116,7 @@ render() {
               value={this.props.article.excerpt.rendered}
             />
           </Text>
-        {/*  <HTMLView
-            value={this.props.article.excerpt.rendered}
-            stylesheet={styles.descriptionCSS}
-            numberOfLines={4}
-          />*/}
         </View>
-      {/*  <View style={styles.borderStyle}>
-      </View>*/}
       </ArticleCardSection>
     </ArticleCard>
     </TouchableOpacity>

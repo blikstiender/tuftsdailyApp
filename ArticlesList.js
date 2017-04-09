@@ -15,35 +15,41 @@ import HalfDescriptionArticle from './HalfDescriptionArticle';
 class ArticlesList extends Component {
   constructor() {
     super();
-    this.state = { articles: [], isLoading: true, animating: true };
+    this.state = { articles: [], isLoading: true, animating: true, unmounted: false, isMounted: false };
 }
 
 componentWillMount() {
-//  console.log('Will mount')
+  this.Mounted = true;
   this.fetchFeatures();
 }
 
 closeActivityIndicator() {
       setTimeout(() => {
+        if (this.Mounted) {
          this.setState({animating: false});
+       }
       }, 2000);
    }
    componentDidMount() {
       this.closeActivityIndicator();
    }
 
-  fetchFeatures() {
-    fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?categories=38&filter[posts_per_page]=7")
-      .then((response) => response.json())
-      .then((responseData) => {
-        // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
-        this.setState({ articles: responseData, isLoading: false });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+   componentWillUnmount() {
+     this.Mounted = false;
+   }
+
+   async fetchFeatures() {
+       try {
+         let response = await fetch('https://tuftsdaily.com/wp-json/wp/v2/posts?categories=38&per_page=5');
+         let responseJson = await response.json();
+         if (this.Mounted) {
+           this.setState({ articles: responseJson, isLoading: false });
+         }
+       } catch(error) {
+         console.error(error);
+       }
+     }
+
   render() {
     if (this.state.isLoading) {
       return (
@@ -57,15 +63,12 @@ closeActivityIndicator() {
     );
     }
     else {
-    //  console.log('EYYYYYO')
+    console.log('rendering')
     return (
       <View>
       <NewsList featureArticle={this.state.articles[0]}/>
-      {/*<HalfPictureHeadlineArticle article={this.state.articles[0]} />*/}
       <OpinionsList featureArticle={this.state.articles[1]}/>
-      {/*<HalfPictureHeadlineArticle article={this.state.articles[1]} />*/}
       <ArtsList featureArticle={this.state.articles[2]}/>
-      {/*<HalfPictureHeadlineArticle article={this.state.articles[2]} />*/}
       <SportsList />
     </View>
     );

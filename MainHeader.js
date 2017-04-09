@@ -2,20 +2,23 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import Title from './Title'
-
+import Title from './Title';
 import Images from 'assets';
 
-// Make a component
 export default class MainHeader extends Component {
-  constructor() {
-    super();
-    this.state = { temp: 32, isLoading: true, imageURL: '' };
+  constructor(props) {
+    super(props);
+    this.state = { temp: 32, isLoading: true, imageURL: '', page: this.props.page ? this.props.page : 'home' };
   }
   componentWillMount() {
+    this.Mounted = true;
     this.fetchWeather();
     this.fetchDavisETA();
     this.fetchCCETA();
+  }
+
+  componentWillUnmount() {
+    this.Mounted = false;
   }
 
   componentDidMount(){
@@ -23,42 +26,41 @@ export default class MainHeader extends Component {
   this.timer = setInterval(()=> this.fetchCCETA(), 30000)
  }
 
-  fetchWeather() {
-    fetch("https://api.apixu.com/v1/current.json?key=00f2f2b5bd644933a43234242172702&q=Somerville")
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log('Weather');
-        this.setState({ temp: Math.round(responseData.current.temp_f), isLoading: false, imageURL: 'https:' + responseData.current.condition.icon });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+ async fetchWeather() {
+     try {
+       let response = await fetch('https://api.apixu.com/v1/current.json?key=00f2f2b5bd644933a43234242172702&q=Somerville');
+       let responseJson = await response.json();
+       if (this.Mounted) {
+         this.setState({ temp: Math.round(responseJson.current.temp_f), isLoading: false, imageURL: 'https:' + responseJson.current.condition.icon });
+       }
+     } catch(error) {
+       console.error(error);
+     }
+   }
 
-  fetchDavisETA() {
-    fetch("https://tufts.doublemap.com/map/v2/eta?stop=2")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ davisETA: responseData.etas[2].etas[0].avg, isLoading: false,});
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+  async fetchDavisETA() {
+       try {
+         let response = await fetch('https://tufts.doublemap.com/map/v2/eta?stop=2');
+         let responseJson = await response.json();
+         if (this.Mounted) {
+           this.setState({ davisETA: responseJson.etas[2].etas[0] ? responseJson.etas[2].etas[0].avg : '-- ', isLoading: false });
+         }
+       } catch(error) {
+         console.error(error);
+       }
+     }
 
-  fetchCCETA() {
-    fetch("https://tufts.doublemap.com/map/v2/eta?stop=1")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ ccETA: responseData.etas[1].etas[0].avg, isLoading: false,});
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+  async fetchCCETA() {
+          try {
+            let response = await fetch('https://tufts.doublemap.com/map/v2/eta?stop=1');
+            let responseJson = await response.json();
+            if (this.Mounted) {
+              this.setState({ ccETA: responseJson.etas[1].etas[0] ? responseJson.etas[1].etas[0].avg : '-- ', isLoading: false });
+            }
+          } catch(error) {
+            console.error(error);
+          }
+        }
 
   renderWeather() {
     if (this.state.imageURL == '') {
@@ -85,7 +87,7 @@ export default class MainHeader extends Component {
           <TouchableOpacity onPress={goToSectionList}>
             <Image style={styles.hamburger} source={Images.hamburgermenu} />
           </TouchableOpacity>
-          <Title fontSize={22} />
+          <Title page = {this.state.page} fontSize={22} />
           <View>
             {this.renderWeather()}
           {/*  <Image style={styles.navButton} source={{uri: this.state.imageURL}} />

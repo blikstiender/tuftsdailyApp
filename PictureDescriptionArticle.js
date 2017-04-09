@@ -4,7 +4,6 @@ import { Actions } from 'react-native-router-flux';
 import HTMLView from 'react-native-htmlview';
 import ArticleCard from './ArticleCard';
 import ArticleCardSection from './ArticleCardSection';
-
 import Images from 'assets';
 
 class PictureDescriptionArticle extends Component {
@@ -14,6 +13,7 @@ class PictureDescriptionArticle extends Component {
   }
 
   componentWillMount() {
+    this.Mounted = true;
     this.fetchAuthor();
     if (this.props.article.featured_media == 0) {
       this.setState({ isLoading: false })
@@ -23,50 +23,42 @@ class PictureDescriptionArticle extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.Mounted = false;
+  }
+
   setURL() {
 
     return ('https://tuftsdaily.com/wp-json/wp/v2/media/' + (this.props.article.featured_media).toString());
   }
 
-  fetchImage() {
-    fetch(this.setURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
-      //  console.log('Fetching image')
-        this.setState({ imageID: responseData.media_details.sizes.medium.source_url, isLoading: false });
-
-
-        //console.log(this.state.articles);
-        //console.log(this.state.articles[0].title.rendered)
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+  async fetchImage() {
+      try {
+        let response = await fetch(this.setURL());
+        let responseJson = await response.json();
+        if (this.Mounted) {
+          this.setState({ imageID: responseJson.media_details.sizes.medium.source_url, isLoading: false });
+        }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
   setAuthorURL() {
     return ('https://tuftsdaily.com/wp-json/wp/v2/users/' + this.props.article.author)
   }
 
-  fetchAuthor() {
-    fetch(this.setAuthorURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
-      //  console.log('Fetching author')
-        this.setState({ authorID: responseData.name, isLoading: false });
-      //  console.log(responseData)
-
-        //console.log(this.state.articles);
-        //console.log(this.state.articles[0].title.rendered)
-      })
-      .catch((error) => {
-        console.log('Error fetching');
-      })
-      .done();
-  }
+  async fetchAuthor() {
+      try {
+        let response = await fetch(this.setAuthorURL());
+        let responseJson = await response.json();
+        if (this.Mounted) {
+        this.setState({ authorID: responseJson.name });
+      }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
 render() {
   const goToArticle = () => Actions.pageThree({ article: this.props.article });
@@ -117,7 +109,7 @@ return (
       </View>
       <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>
-        
+
       </View>
       <View style={styles.borderStyle}>
       </View>

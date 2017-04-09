@@ -12,38 +12,32 @@ class OtherFirstArticleCard extends Component {
   }
 
   componentWillMount() {
+    this.Mounted = true;
     this.fetchAuthor();
+  }
 
+  componentWillUnmount() {
+    this.Mounted = false;
   }
 
   setAuthorURL() {
     return ('https://tuftsdaily.com/wp-json/wp/v2/users/' + this.props.article.author)
   }
 
-  fetchAuthor() {
-    fetch(this.setAuthorURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        // this.setState() will cause the new data to be applied to the UI that is created by the `render` function below
-      //  console.log('Fetching author')
-        this.setState({ authorID: responseData.name, isLoading: false });
-      //  console.log(responseData)
-
-        //console.log(this.state.articles);
-        //console.log(this.state.articles[0].title.rendered)
-      })
-      .catch((error) => {
-        console.log('Error fetching');
-      })
-      .done();
-  }
-
+  async fetchAuthor() {
+      try {
+        let response = await fetch(this.setAuthorURL());
+        let responseJson = await response.json();
+        if (this.Mounted) {
+        this.setState({ authorID: responseJson.name });
+      }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
 render() {
   const goToArticle = () => Actions.pageThree({ article: this.props.article });
-  /*if (this.state.isLoading) {
-    this.fetchImage();
-  }*/
 return (
   <TouchableOpacity onPress={goToArticle}>
     <ArticleCard>
@@ -58,8 +52,6 @@ return (
           />
         </Text>
       </View>
-    {/*  <View style={styles.borderStyle}>
-    </View>*/}
     </ArticleCardSection>
   </ArticleCard>
   </TouchableOpacity>

@@ -4,6 +4,8 @@ import ArticleCard from './ArticleCard';
 import PictureDescriptionArticle from './PictureDescriptionArticle';
 import HeadlineArticle from './HeadlineArticle';
 import OtherFirstArticleCard from './OtherFirstArticleCard';
+import MainHeader from './MainHeader';
+import Images from './assets';
 
 class OpinionSection extends Component {
   constructor() {
@@ -12,20 +14,26 @@ class OpinionSection extends Component {
 }
 
 componentWillMount() {
+  this.Mounted = true;
   this.fetchOpinions();
 }
 
-  fetchOpinions() {
-    fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?categories=24&per_page=20")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ articles: responseData, isLoading: false });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
+componentWillUnmount() {
+  this.Mounted = false;
+}
+
+async fetchOpinions() {
+    try {
+      let response = await fetch('https://tuftsdaily.com/wp-json/wp/v2/posts?categories=24&per_page=20');
+      let responseJson = await response.json();
+      if (this.Mounted) {
+        this.setState({ articles: responseJson, isLoading: false });
+      }
+    } catch(error) {
+      console.error(error);
+    }
   }
+
 
 
   render() {
@@ -41,31 +49,31 @@ componentWillMount() {
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[1]}/>
             <HeadlineArticle article={this.state.articles[2]} />
-            <HeadlineArticle article={this.state.articles[3]} />
-            <OtherFirstArticleCard article={this.state.articles[4]} />
+            <HeadlineArticle article={this.state.articles[3]} isLast={true}/>
           </ArticleCard>
+          <OtherFirstArticleCard article={this.state.articles[4]} />
             <ArticleCard>
               <HeadlineArticle article={this.state.articles[5]}/>
               <HeadlineArticle article={this.state.articles[6]} />
-              <HeadlineArticle article={this.state.articles[7]} />
+              <HeadlineArticle article={this.state.articles[7]} isLast={true}/>
           </ArticleCard>
           <OtherFirstArticleCard article={this.state.articles[8]} />
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[9]}/>
             <HeadlineArticle article={this.state.articles[10]} />
-            <HeadlineArticle article={this.state.articles[11]} />
-            <OtherFirstArticleCard article={this.state.articles[12]} />
+            <HeadlineArticle article={this.state.articles[11]} isLast={true}/>
           </ArticleCard>
+          <OtherFirstArticleCard article={this.state.articles[12]} />
             <ArticleCard>
               <HeadlineArticle article={this.state.articles[13]}/>
               <HeadlineArticle article={this.state.articles[14]} />
-              <HeadlineArticle article={this.state.articles[15]} />
+              <HeadlineArticle article={this.state.articles[15]} isLast={true}/>
           </ArticleCard>
           <OtherFirstArticleCard article={this.state.articles[16]} />
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[17]}/>
             <HeadlineArticle article={this.state.articles[18]} />
-            <HeadlineArticle article={this.state.articles[19]} />
+            <HeadlineArticle article={this.state.articles[19]} isLast={true}/>
           </ArticleCard>
         </ScrollView>
       );

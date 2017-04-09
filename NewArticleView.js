@@ -5,11 +5,8 @@ import ArticleCardArt from './ArticleCardArt';
 import ArticleCardSection from './ArticleCardSection';
 import { Actions } from 'react-native-router-flux';
 import HTMLView from 'react-native-htmlview';
-
 import Images from 'assets';
-
 var moment = require('moment');
-var REQUEST_MEDIA_URL = "https://tuftsdaily.com/wp-json/wp/v2/media/"
 
 class NewArticleView extends Component {
   constructor(props) {
@@ -17,6 +14,7 @@ class NewArticleView extends Component {
     this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true, hasImage: false, date: props.article.date};
   }
   componentWillMount() {
+    this.Mounted = true;
     this.fetchAuthor();
     this.parseDate();
     if (this.props.article.featured_media == 0) {
@@ -26,62 +24,52 @@ class NewArticleView extends Component {
       this.fetchImage();
     }
   }
+
+  componentWillUnmount() {
+    this.Mounted = false;
+  }
+
   parseDate(){
     var fdate = moment(this.state.date, "YYYY-MM-DD").format("MMM D YYYY");
     this.setState({date: fdate})
-    //console.log(this.state);
   }
 
-  // setURL() {
-  //
-  //   return ('https://tuftsdaily.com/wp-json/wp/v2/media/' + (this.props.article.featured_media).toString());
-  // }
-
-  fetchImage() {
+  async fetchImage() {
     if(this.props.article.featured_media != 0){
-            REQUEST_MEDIA_URL = REQUEST_MEDIA_URL + this.props.article.featured_media
-            console.log(REQUEST_MEDIA_URL)
-            //fetch(REQUEST_MEDIA_URL)
-            fetch("https://tuftsdaily.com/wp-json/wp/v2/media/" + this.props.article.featured_media)
-                .then((response) => response.json())
-                .then((responseData) => {
-                  console.log(responseData)
-                  this.setState({hasImage: true, imageID: responseData.media_details.sizes.medium.source_url})
-                  //console.log(this.state);
-                })
-                .catch((error) => {
-                  console.log(error);
-                })
-                .done();
-
-          }
+      try {
+        let response = await fetch('https://tuftsdaily.com/wp-json/wp/v2/media/' + this.props.article.featured_media);
+        let responseJson = await response.json();
+        if (this.Mounted) {
+          this.setState({ imageID: responseJson.media_details.sizes.medium.source_url, hasImage: true });
+        }
+      } catch(error) {
+        console.error(error);
+      }
+    }
   }
 
   setAuthorURL() {
     return ('https://tuftsdaily.com/wp-json/wp/v2/users/' + this.props.article.author)
   }
 
-  fetchAuthor() {
-    fetch(this.setAuthorURL())
-      .then((response) => response.json())
-      .then((responseData) => {
-        var authorname = responseData.name
-        this.setState({ authorID: authorname.toUpperCase(), isLoading: false });
-      })
-      .catch((error) => {
-        console.log('Error fetching');
-      })
-      .done();
-  }
+  async fetchAuthor() {
+      try {
+        let response = await fetch(this.setAuthorURL());
+        let responseJson = await response.json();
+        if (this.Mounted) {
+        this.setState({ authorID: responseJson.name.toUpperCase() });
+      }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
   shareArticle() {
     console.log("Trying to share")
       Share.share({
         url: this.props.article.link
-        //console.log(message);
       },
       )
-      //.then(this._showResult)
       .catch((error) => console.log(error));
     }
 
@@ -94,7 +82,6 @@ render() {
   }
 else {
   if(this.state.hasImage == true){
-    //console.log("image")
 return (
   <View>
   <ScrollView style={{ marginTop: 20 }}>
@@ -130,8 +117,6 @@ return (
 </View>
 )}
 else{
-  //console.log("hi no image");
-//  console.log(this.state)
   return (
     <View>
     <ScrollView style={{ marginTop: 20 }}>
@@ -149,7 +134,7 @@ else{
     <TouchableOpacity style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
       <Image source={Images.blackhearticon} style={{ height: 40, width: 40}} />
     </TouchableOpacity>
-    <TouchableOpacity onPress={goBack} style={{position: 'absolute', right: 100, bottom: 10, justifyContent: 'center'}}>
+    <TouchableOpacity onPress={goBack} style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
       <Image source={Images.shareicon} style={{ height: 40, width: 40}} />
     </TouchableOpacity>
   </View>

@@ -14,21 +14,25 @@ class SportsList extends Component {
 }
 
 componentWillMount() {
-  this.fetchOpinions();
+  this.Mounted = true;
+  this.fetchSports();
 }
 
-  fetchOpinions() {
-    fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?categories=27&filter[posts_per_page]=5")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ articles: responseData, isLoading: false });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+componentWillUnmount() {
+  this.Mounted = false;
+}
 
+async fetchSports() {
+    try {
+      let response = await fetch('https://tuftsdaily.com/wp-json/wp/v2/posts?categories=27&per_page=5');
+      let responseJson = await response.json();
+      if (this.Mounted) {
+        this.setState({ articles: responseJson, isLoading: false });
+      }
+    } catch(error) {
+      console.error(error);
+    }
+  }
 
   render() {
     const goToSports = () => Actions.sportsSection();

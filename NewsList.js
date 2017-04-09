@@ -14,68 +14,27 @@ class NewsList extends Component {
 }
 
 componentWillMount() {
+  this.Mounted = true;
   this.fetchNews();
 }
 
-  fetchNews() {
-    fetch("https://tuftsdaily.com/wp-json/wp/v2/posts?categories=36&filter[posts_per_page]=5")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ articles: responseData, isLoading: false});
-      })
-    /*  .then (() => {
-        for (var i = 0; i < this.state.articles.length; i++) {
-          if (this.state.articles[i].featured_media == 0) {
-            this.setState({ images: this.state.images.concat('')})
-          }
-          else {
-            fetch("https://tuftsdaily.com/wp-json/wp/v2/media/"+this.state.articles[i].featured_media)
-              .then((response) => response.json())
-              .then((responseData) => {
-                this.setState({ images: this.state.images.concat(responseData.media_details.sizes.medium.source_url)})
-                console.log(responseData)
-              })
-              .catch((error) => {
-                console.log(error);
-              })
-              .done();
-          }
-        }
-      })
-      .then(() => {
-        this.setState({ isLoading: false })
-      })*/
-      .catch((error) => {
-        console.log(error);
-      })
-      .done();
-  }
+componentWillUnmount() {
+  this.Mounted = false;
+}
 
-  fetchImages() {
-  //  console.log("Here")
-    //console.log(this.state)
-    for (var i = 0; i < this.state.articles.length; i++) {
-      if (this.state.articles[i].featured_media == 0) {
-        console.log('It be zero')
-        return;
+async fetchNews() {
+    try {
+      let response = await fetch('https://tuftsdaily.com/wp-json/wp/v2/posts?categories=36&per_page=5');
+      let responseJson = await response.json();
+      if (this.Mounted) {
+        this.setState({ articles: responseJson, isLoading: false });
       }
-      else {
-        fetch("https://tuftsdaily.com/wp-json/wp/v2/media/"+this.state.articles[i].featured_media)
-          .then((resonse) => response.json())
-          .then((responseData) => {
-            console.log(responseData)
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-          .done();
-      }
+    } catch(error) {
+      console.error(error);
     }
   }
 
-
   render() {
-    //console.log("HERE")
     const goToNews = () => Actions.newsSection();
     if (this.state.isLoading) {
       return (
@@ -83,14 +42,13 @@ componentWillMount() {
     );
     }
     else {
-    //  console.log("HERE")
       return (
         <View>
-            <FirstArticleCard article={this.state.articles[0]} image={this.state.images[4]} />
+            <FirstArticleCard article={this.state.articles[0]}/>
             <ArticleCard>
-              <PictureDescriptionArticle article={this.state.articles[1]} image={this.state.images[2]} />
-              <HeadlineArticle article={this.state.articles[2]} image={this.state.images[1]} />
-              <HeadlineArticle article={this.state.articles[3]} image={this.state.images[3]} />
+              <PictureDescriptionArticle article={this.state.articles[1]}/>
+              <HeadlineArticle article={this.state.articles[2]}/>
+              <HeadlineArticle article={this.state.articles[3]}/>
               <TouchableOpacity onPress={goToNews}>
                 <View style={{ padding: 5, justifyContent: 'space-between', flexDirection: 'row',alignItems:'center', backgroundColor: '#fff', }}>
                   <Text style={{ color: '#a8a8a8', fontSize: 10, paddingLeft: 3 }}>More News</Text>
