@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import ArticleCard from './ArticleCard';
 import PictureDescriptionArticle from './PictureDescriptionArticle';
 import HeadlineArticle from './HeadlineArticle';
-import OtherFirstArticleCard from './OtherFirstArticleCard';
+import FirstArticleCard from './FirstArticleCard';
 import HalfPictureHeadlineArticle from './HalfPictureHeadlineArticle';
 
 class OpinionsList extends Component {
@@ -47,7 +47,7 @@ async fetchOpinions() {
           <View style={{ alignItems: 'center', marginTop: 10 }}>
             <Text style={styles.sectionHeaderStyle}>Opinion</Text>
           </View>
-          <OtherFirstArticleCard article={this.state.articles[0]} />
+          <FirstArticleCard article={this.state.articles[0]} />
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[1]}/>
             <HeadlineArticle article={this.state.articles[2]} />

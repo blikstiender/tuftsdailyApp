@@ -8,7 +8,7 @@ import ArticleCard from './ArticleCard';
 class FirstArticleCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: props.article.title.rendered, imageID: '', authorID: props.article.author, isLoading: true, };
+    this.state = {title: props.article.title.rendered, imageID: '', authorID: '', isLoading: true, };
   }
 
   componentWillMount() {
@@ -20,6 +20,7 @@ class FirstArticleCard extends Component {
     else {
       this.fetchImage();
     }
+    this.isCartoon();
   }
 
   componentWillUnmount() {
@@ -59,11 +60,46 @@ class FirstArticleCard extends Component {
       }
     }
 
+    isCartoon() {
+      var codeLine = this.state.title
+      var firstWord = codeLine.substr(0, codeLine.indexOf(" "));
+      if (firstWord == 'Cartoon:') {
+        var expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+        var expression2 =/........(?:png|jpg)/g;
+        //console.log(this.state.articles[i].content.rendered)
+        var url = this.props.article.content.rendered.match(expression)[1];
+        var width = this.props.article.content.rendered.match(expression2)[0].slice(0,3);
+        var height = this.props.article.content.rendered.match(expression2)[0].slice(4,7);
+        console.log(width);
+        console.log(height);
+        this.setState({cartoonURL: url, isCartoon: true, cartoonWidth: width, cartoonHeight: height });
+      }
+    }
+
 render() {
   const goToArticle = () => Actions.pageThree({ article: this.props.article });
   if (this.state.isLoading) {
     return (
       <Text></Text>
+    )
+  }
+  else if (this.state.isCartoon) {
+    return (
+      <TouchableOpacity onPress={goToArticle}>
+        <ArticleCard>
+      <ArticleCardSection style={styles.headerContentStyle}>
+        <View style={{ marginBottom: 12, marginLeft: 8, marginRight: 8, marginTop: 15, alignItems: 'center' }}>
+          <Image
+            style={this.state.cartoonWidth ? {width: this.state.cartoonWidth/4, height: this.state.cartoonHeight/4, flex: 1} : styles.cartoonStyle}
+            source={{uri: this.state.cartoonURL }}
+          />
+        </View>
+        <View style={{ marginBottom: 5, marginLeft: 8, marginRight: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID}</Text>
+        </View>
+      </ArticleCardSection>
+    </ArticleCard>
+      </TouchableOpacity>
     )
   }
   else if (this.props.article.featured_media == 0 ) {
@@ -186,6 +222,11 @@ const styles = {
     marginRight: 8,
     marginBottom: 15
 
+  },
+  cartoonStyle: {
+    width: 150,
+    height: 125,
+    flex: 1
   }
 };
 

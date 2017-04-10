@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import ArticleCard from './ArticleCard';
 import PictureDescriptionArticle from './PictureDescriptionArticle';
 import HeadlineArticle from './HeadlineArticle';
-import OtherFirstArticleCard from './OtherFirstArticleCard';
+import FirstArticleCard from './FirstArticleCard';
 
 class FullOpinionsList extends Component {
   constructor() {
@@ -41,25 +41,25 @@ async fetchOpinions() {
     else {
       return (
         <View>
-          <OtherFirstArticleCard article={this.state.articles[0]} />
+          <FirstArticleCard article={this.state.articles[0]} />
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[1]}/>
             <HeadlineArticle article={this.state.articles[2]} />
             <HeadlineArticle article={this.state.articles[3]} isLast={true}/>
-            <OtherFirstArticleCard article={this.state.articles[4]} />
           </ArticleCard>
+          <FirstArticleCard article={this.state.articles[4]} />
             <ArticleCard>
               <HeadlineArticle article={this.state.articles[5]}/>
               <HeadlineArticle article={this.state.articles[6]} />
               <HeadlineArticle article={this.state.articles[7]} isLast={true}/>
           </ArticleCard>
-          <OtherFirstArticleCard article={this.state.articles[8]} />
+          <FirstArticleCard article={this.state.articles[8]} />
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[9]}/>
             <HeadlineArticle article={this.state.articles[10]} />
             <HeadlineArticle article={this.state.articles[11]} isLast={true}/>
-            <OtherFirstArticleCard article={this.state.articles[12]} />
           </ArticleCard>
+          <FirstArticleCard article={this.state.articles[12]} />
             <ArticleCard>
               <HeadlineArticle article={this.state.articles[13]}/>
               <HeadlineArticle article={this.state.articles[14]} />

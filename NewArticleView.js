@@ -23,6 +23,7 @@ class NewArticleView extends Component {
     else {
       this.fetchImage();
     }
+    this.isCartoon();
   }
 
   componentWillUnmount() {
@@ -57,11 +58,29 @@ class NewArticleView extends Component {
         let response = await fetch(this.setAuthorURL());
         let responseJson = await response.json();
         if (this.Mounted) {
-        this.setState({ authorID: responseJson.name.toUpperCase() });
+        this.setState({ authorID: responseJson.name ? responseJson.name.toUpperCase() : 'anonymous'.toUpperCase() });
       }
       } catch(error) {
         console.error(error);
       }
+    }
+
+    isCartoon() {
+      var codeLine = this.state.title
+      var firstWord = codeLine.substr(0, codeLine.indexOf(" "));
+      if (firstWord == 'Cartoon:') {
+        var expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+        var expression2 =/........(?:png|jpg)/g;
+        //console.log(this.state.articles[i].content.rendered)
+        var url = this.props.article.content.rendered.match(expression)[1];
+        var width = this.props.article.content.rendered.match(expression2)[0].slice(0,3);
+        var height = this.props.article.content.rendered.match(expression2)[0].slice(4,7);
+        console.log(width);
+        console.log(height);
+      this.setState({imageID: url, hasImage: true, isCartoon: true, cartoonWidth: width, cartoonHeight: height});
+
+    }
+
     }
 
   shareArticle() {
@@ -83,12 +102,14 @@ render() {
 else {
   if(this.state.hasImage == true){
 return (
-  <View>
+  <View style={{ height: windowSize.height}}>
   <ScrollView style={{ marginTop: 20 }}>
     <ArticleCardImg>
-      <View style={{ marginBottom: 10, }}>
+      <View style={{ marginBottom: 10, alignItems: 'center' }}>
         <Image
-          style={styles.imageStyle}
+          style={this.state.isCartoon ? {width: windowSize.width,
+          height: this.state.cartoonHeight * (windowSize.width / this.state.cartoonWidth),
+          flex: 1} : styles.imageStyle}
           source={{uri: this.state.imageID }}
         />
       </View>
@@ -118,7 +139,7 @@ return (
 )}
 else{
   return (
-    <View>
+    <View style={{ height: windowSize.height}}>
     <ScrollView style={{ marginTop: 20 }}>
       <ArticleCardArt>
         <View style={{ marginLeft: 8, marginRight: 8 }}>
@@ -188,7 +209,13 @@ const styles = {
     marginLeft: 8,
     marginRight: 8
 
+  },
+
+  cartoonStyle: {
+    width: windowSize.width,
+    height: 600 * (windowSize.width / 501),
+    flex: 1
   }
-};
+}
 
 export default NewArticleView;
