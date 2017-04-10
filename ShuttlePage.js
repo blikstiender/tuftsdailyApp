@@ -12,10 +12,11 @@ import {
   Image,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import ArticleCardArt from './ArticleCardArt';
+import ArticleCard from './ArticleCard';
 import MapView from 'react-native-maps';
 import { ScrollView } from 'react-native';
 import MainHeader from './MainHeader';
+import SubHeader from './SubHeader';
 
 import flagBlueImg from './assets/images/colorize.png';
 
@@ -24,11 +25,14 @@ var windowSize = Dimensions.get('window');
 
 var styles = StyleSheet.create({
   description: {
-    marginBottom: 20,
+
     fontSize: 12,
-    textAlign: 'center',
+    textAlign: 'right',
     color: '#000000',
-    fontFamily: 'Superclarendon'
+    fontFamily: 'Superclarendon',
+    width: windowSize.width*.40,
+    textAlign: 'right',
+    paddingLeft: 20
   },
 
     container: {
@@ -65,6 +69,16 @@ var styles = StyleSheet.create({
   },
   timeDigit: {
     fontWeight: 'bold'
+  },
+
+  borderStyle: {
+    paddingTop: 10,
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+    height: 2,
+    marginLeft: 20,
+    marginRight: 20
+
   }
 
 
@@ -74,76 +88,92 @@ var styles = StyleSheet.create({
 class ShuttlePage extends Component {
   constructor() {
     super();
-    this.state = { davisETA: 0, ccETA: 0, olinETA: 0,  isLoading: true, joeyLat: 0, joeyLng: 0 };
+    this.state = { davisETA: '--', ccETA: '--', olinETA: '--',  isLoading: true, joeyLat: 0, joeyLng: 0, animating: true, tabs: ['Davis Sq', 'SMFA/NEC', 'Boston Ave'],
+    currentTab: 'Davis Sq' };
 
   }
 
   componentWillMount() {
+    this.Mounted = true;
     this.fetchDavis();
     this.fetchCC();
     this.fetchOlin();
     this.getJoey();
   }
 
-  fetchDavis() {
-    fetch("https://tufts.doublemap.com/map/v2/eta?stop=2")
-    .then((response) => response.json())
-    .then((responseData) => { this.setState({ davisETA: responseData.etas[2].etas[0].avg, isLoading: false });
-      console.log(responseData);
-  })
-    .catch((error) => {
-      console.log(error);
-    })
-    .done();
-  }
+  closeActivityIndicator() {
+        setTimeout(() => {
+           this.setState({animating: false});
+        }, 2000);
+     }
 
-  fetchCC() {
-    fetch("https://tufts.doublemap.com/map/v2/eta?stop=1")
-    .then((response) => response.json())
-    .then((responseData) => { this.setState({ ccETA: responseData.etas[1].etas[0].avg, isLoading: false });
-      console.log(responseData);
-  })
-    .catch((error) => {
-      console.log(error);
-    })
-    .done();
+  componentDidMount(){
+  this.closeActivityIndicator();
+  this.timer = setInterval(()=> this.fetchDavis(), 30000)
+  this.timer = setInterval(()=> this.fetchCC(), 30000)
+  this.timer = setInterval(()=> this.fetchOlin(), 30000)
+  this.timer = setInterval(()=> this.getJoey(), 250)
+ }
+
+ componentWillUnmount() {
+   this.Mounted = false;
+ }
+
+ handleTabPressed(tab, e) {
+   this.setState({
+     currentTab: tab,
+   });
+ }
+
+async fetchDavis() {
+     try {
+       let response = await fetch('https://tufts.doublemap.com/map/v2/eta?stop=2');
+       let responseJson = await response.json();
+       if (this.Mounted) {
+         this.setState({ davisETA: responseJson.etas[2].etas[0] ? responseJson.etas[2].etas[0].avg : '-- ', isLoading: false });
+       }
+     } catch(error) {
+       console.error(error);
+     }
+   }
+
+async fetchCC() {
+        try {
+          let response = await fetch('https://tufts.doublemap.com/map/v2/eta?stop=1');
+          let responseJson = await response.json();
+          if (this.Mounted) {
+            this.setState({ ccETA: responseJson.etas[1].etas[0] ? responseJson.etas[1].etas[0].avg : '-- ', isLoading: false });
+          }
+        } catch(error) {
+          console.error(error);
+        }
+      }
+
+async fetchOlin() {
+        try {
+          let response = await fetch('https://tufts.doublemap.com/map/v2/eta?stop=6');
+          let responseJson = await response.json();
+          if (this.Mounted) {
+            this.setState({ olinETA: responseJson.etas[6].etas[0] ? responseJson.etas[6].etas[0].avg : '-- ', isLoading: false });
+          }
+        } catch(error) {
+          console.error(error);
+        }
+      }
+
+async getJoey() {
+        try {
+          let response = await fetch('https://tufts.doublemap.com/map/v2/buses');
+          let responseJson = await response.json();
+          if (this.Mounted) {
+            this.setState({ joeyLat: responseJson[0] ? responseJson[0].lat : 0, joeyLng: responseJson[0] ? responseJson[0].lon : 0 });
+          }
+        } catch(error) {
+          console.error(error);
+        }
 }
-
-  fetchOlin() {
-    fetch("https://tufts.doublemap.com/map/v2/eta?stop=6")
-    .then((response) => response.json())
-    .then((responseData) => { this.setState({ olinETA: responseData.etas[6].etas[0].avg, isLoading: false });
-      console.log(responseData);
-  })
-    .catch((error) => {
-      console.log(error);
-    })
-    .done();
-}
-
-  getJoey() {
-      console.log("getjoey")
-      fetch("https://tufts.doublemap.com/map/v2/buses/?")
-      .then((response) => {
-    return response.json();
-      })
-      .then((responseData) => {
-        console.log(responseData);
-        this.setState({ joeyLat: responseData[0].lat, joeyLng: responseData[0].lon});
-  })
-
-    .catch((error) => {
-      console.log("Error");
-      console.log(error);
-    })
-    .done();
-    console.log("bye")
-    console.log(this.state)
-    }
 
   render() {
-    console.log("hi")
-    console.log(this.state)
     const goBack = () => Actions.pop();
       if (this.state.isLoading) {
         return (
@@ -157,8 +187,17 @@ class ShuttlePage extends Component {
 <View style={{height: windowSize.height}} >
         <ScrollView style={styles.background}>
       <MainHeader />
-    <ArticleCardArt>
-
+      <SubHeader tabs={this.state.tabs}
+                 currentTab={this.state.currentTab}
+                 onTabPressed={(tab, e) => this.handleTabPressed(tab, e)}/>
+    <ArticleCard style={{ backgroundColor: 'white'}}>
+      <Text style={{ fontSize: 20, fontFamily: 'Superclarendon', paddingLeft: 10, paddingTop: 10 }}>DAVIS SHUTTLE</Text>
+      <View style={{paddingTop: 10,
+      borderBottomWidth: 2,
+      borderColor: 'black',
+      height: 5,
+      marginLeft: 10,
+      marginRight: 10}}/>
       <MapView
         style={{height: windowSize.height/3, margin: 40}}
     initialRegion={{
@@ -173,9 +212,6 @@ class ShuttlePage extends Component {
             coordinate={{
               latitude: this.state.joeyLat,
               longitude: this.state.joeyLng,
-
-              //latitude: 42.40505,
-              //longitude: -71.11995,
             }}
 
             centerOffset={{ x: 0, y: 0 }}
@@ -188,51 +224,32 @@ class ShuttlePage extends Component {
           </MapView.Marker>
       </MapView>
 
-
-
-
-
-
-
-
-        <Text style={styles.description}>
-        Davis Square
-
-
-        <Text style={styles.time}>
-
-        <Text style={styles.timeDigit}>
-        {this.state.davisETA}
-        </Text> min
-
-
-        </Text>
-
-            </Text>
-
-        <Text style={styles.description}>
-        Campus Center
-
-
-        <Text style={styles.time}>
-        <Text style={styles.timeDigit}>
-          {this.state.ccETA}
-          </Text> min sdkjhfakjdsfh a
-
-        </Text>
-        </Text>
-
-        <Text style={styles.description}>
-        Olin Hall
-
-
-        <Text style={styles.time}>
-        <Text style={styles.timeDigit}>
-        {this.state.olinETA}
-        </Text> min
-        </Text>
-        </Text>
-    </ArticleCardArt>
+        <View>
+          <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.description}>Davis Square</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20}}>
+              <Text style={styles.timeDigit}>{this.state.davisETA}</Text>
+              <Text style={styles.time}> min</Text>
+            </View>
+          </View>
+          <View style={styles.borderStyle} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 10}}>
+            <Text style={styles.description}>Campus Center</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20}}>
+              <Text style={styles.timeDigit}>{this.state.ccETA}</Text>
+              <Text style={styles.time}> min</Text>
+            </View>
+          </View>
+          <View style={styles.borderStyle} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 10, paddingBottom: 10}}>
+            <Text style={styles.description}>Olin Hall</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20}}>
+              <Text style={styles.timeDigit}>{this.state.olinETA}</Text>
+              <Text style={styles.time}> min</Text>
+            </View>
+          </View>
+        </View>
+    </ArticleCard>
 
       </ScrollView>
        <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
