@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, WebView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import HTMLView from 'react-native-htmlview';
+import HTMLView from './costum_modules/react-native-htmlview';
 import ArticleCardSection from './ArticleCardSection';
 import ArticleCard from './ArticleCard';
 

@@ -4,7 +4,7 @@ import ArticleCardImg from './ArticleCardImg';
 import ArticleCardArt from './ArticleCardArt';
 import ArticleCardSection from './ArticleCardSection';
 import { Actions } from 'react-native-router-flux';
-import HTMLView from 'react-native-htmlview';
+import HTMLView from './costum_modules/react-native-htmlview';
 import Images from 'assets';
 var moment = require('moment');
 
