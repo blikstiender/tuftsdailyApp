@@ -4,10 +4,10 @@ import ArticleCardImg from './ArticleCardImg';
 import ArticleCardArt from './ArticleCardArt';
 import ArticleCardSection from './ArticleCardSection';
 import { Actions } from 'react-native-router-flux';
-import HTMLView from './costum_modules/react-native-htmlview';
+import HTMLView from 'react-native-htmlview';
 import Images from 'assets';
 var moment = require('moment');
-
+const goToArticle = () => Actions.pageThree({ article: this.props.article });
 class NewArticleView extends Component {
   constructor(props) {
     super(props);
@@ -94,8 +94,45 @@ class NewArticleView extends Component {
     }
 
     handleURL(url) {
-      console.log(url);
+      //var matches = url.match(/:\/\/(?:www\.)?(.[^/]+)(.*)/);
+      link = new URL(url);
+      console.log(link.href)
+      if (link.hostname == "tuftsdaily.com") {
+        console.log(link.href.match(/([^\/]*)\/*$/)[1]);
+        var slug = link.href.match(/([^\/]*)\/*$/)[1];
+        var fetchURL = 'https://tuftsdaily.com/wp-json/wp/v2/posts?slug=' + slug;
+        this.fetchArticle(fetchURL);
     }
+    else {
+      Linking.openURL.call(Linking, url);
+    }
+  }
+
+  /*  async fetchArticle(url) {
+        try {
+          let response = await fetch(url);
+          let responseJson = await response.json();
+          if (this.Mounted) {
+            console.log(responseJson.id)
+          }
+        } catch(error) {
+          console.error(error);
+        }
+      }*/
+      fetchArticle(url) {
+        fetch(url)
+        .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson[0].id);
+        console.log(url);
+        Actions.pageThree({ article: responseJson[0]});
+
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
 
 render() {
   const goBack = () => Actions.pop();
@@ -154,7 +191,7 @@ else{
         <View style={{ marginLeft: 8, marginRight: 8, marginTop: 12 }}>
           <Text style={styles.headerTextStyle}><HTMLView value={ this.state.title } /></Text>
           <Text style={{ color: '#778899', fontSize: 10, paddingTop: 11, paddingBottom: 16 }}>{this.state.authorID} | {this.state.date}</Text>
-          <Text style={styles.descriptionTextStyle}><HTMLView value={ this.props.article.content.rendered } onLinkPress={(url) => Linking.openURL.call(Linking, url)}/></Text>
+          <Text style={styles.descriptionTextStyle}><HTMLView value={ this.props.article.content.rendered } onLinkPress={(url) => this.handleURL(url)}/></Text>
         </View>
       </ArticleCardArt>
     </ScrollView>
