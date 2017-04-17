@@ -39,11 +39,11 @@ export default class MainView extends Component {
     // const goToPageTwo = () => Actions.fullOpinionsList();
     return (
       <View>
-        <ScrollView style={styles.background}>
           <MainHeader />
           <SubHeader tabs={this.state.tabs}
                      currentTab={this.state.currentTab}
                      onTabPressed={(tab, e) => this.handleTabPressed(tab, e)}/>
+          <ScrollView style={styles.background}>
           {this.renderArticles()}
         </ScrollView>
       </View>

@@ -64,8 +64,8 @@ isCartoon() {
     else {
       return (
         <View>
-        <ScrollView>
           <MainHeader page = 'opinion' />
+          <ScrollView>
           <FirstArticleCard article={this.state.articles[0]} />
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[1]}/>
