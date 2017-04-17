@@ -230,7 +230,7 @@ const styles = {
   },
 
   descriptionTextStyle: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#696969',
     fontFamily: 'Avenir',
     marginBottom: 10
