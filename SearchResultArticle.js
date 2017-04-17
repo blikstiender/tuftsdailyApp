@@ -86,7 +86,7 @@ class SearchResultArticle extends Component {
                   value={'<p>' + this.state.title + '</p>'}
                 /></Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 10, /*paddingLeft: 5,*/ paddingBottom: 10 }}>
-                  <Text style={{ color: '#8e8e8e', fontSize: 12, fontFamily: 'Avenir', fontWeight: '300' }}>{this.state.date}</Text>
+                  <Text style={{ color: '#8e8e8e', fontSize: 12, fontFamily: 'Avenir', fontWeight: 'bold' }}>{this.state.date}</Text>
                   <Text style={{ color: '#778899', fontSize: 12, fontFamily: 'Avenir',  }}>  {this.state.authorID}</Text>
                 </View>
               </View>
@@ -108,7 +108,7 @@ class SearchResultArticle extends Component {
                   value={'<p>' + this.state.title + '</p>'}
                 /></Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 10, /*paddingLeft: 5,*/ paddingBottom: 10 }}>
-                <Text style={{ color: '#8e8e8e', fontSize: 12, fontFamily: 'Avenir', fontWeight: '300' }}>{this.state.date}</Text>
+                <Text style={{ color: '#8e8e8e', fontSize: 12, fontFamily: 'Avenir', fontWeight: 'bold' }}>{this.state.date}</Text>
                 <Text style={{ color: '#778899', fontSize: 12, fontFamily: 'Avenir',  }}>  {this.state.authorID}</Text>
               </View>
               </View>
@@ -143,6 +143,7 @@ const styles = {
   headerTextStyle: {
     fontSize: 14,
     fontWeight: '500',
+    fontFamily: 'Superclarendon',
   //  justifyContent: 'center',
     paddingTop: 10,
 //    marginLeft: 5,
