@@ -131,7 +131,9 @@ const styles = StyleSheet.create({
     paddingRight: gridSize,
     paddingTop: 2 * gridSize + 4,
     paddingBottom: gridSize / 2,
-    flex: 1,
+    //flex: 1,
+    flexBasis: 80
+
   },
   topContainer: {
     flexDirection: 'row',

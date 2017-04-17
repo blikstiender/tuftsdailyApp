@@ -39,9 +39,10 @@ class NewArticleView extends Component {
     if(this.props.article.featured_media != 0){
       try {
         let response = await fetch('https://tuftsdaily.com/wp-json/wp/v2/media/' + this.props.article.featured_media);
+        console.log('https://tuftsdaily.com/wp-json/wp/v2/media/' + this.props.article.featured_media);
         let responseJson = await response.json();
         if (this.Mounted) {
-          this.setState({ imageID: responseJson.media_details.sizes.medium.source_url, hasImage: true });
+          this.setState({ imageID: responseJson.media_details.sizes.medium.source_url, imageWidth: responseJson.media_details.sizes.medium.width, imageHeight: responseJson.media_details.sizes.medium.height,hasImage: true });
         }
       } catch(error) {
         console.error(error);
@@ -92,6 +93,10 @@ class NewArticleView extends Component {
       .catch((error) => console.log(error));
     }
 
+    handleURL(url) {
+      console.log(url);
+    }
+
 render() {
   const goBack = () => Actions.pop();
   if (this.props.isLoading) {
@@ -109,7 +114,9 @@ return (
         <Image
           style={this.state.isCartoon ? {width: windowSize.width,
           height: this.state.cartoonHeight * (windowSize.width / this.state.cartoonWidth),
-          flex: 1} : styles.imageStyle}
+          flex: 1} : {width: windowSize.width,
+          height: this.state.imageHeight * (windowSize.width / this.state.imageWidth),
+          flex: 1}/*styles.imageStyle*/}
           source={{uri: this.state.imageID }}
         />
       </View>
@@ -123,7 +130,9 @@ return (
         <Text style={styles.descriptionTextStyle}>
           <HTMLView
             value={ this.props.article.content.rendered }
-            onLinkPress={(url) => Linking.openURL.call(Linking, url)}
+          /*  onLinkPress={(url) =>
+              Linking.openURL.call(Linking, url)}*/
+              onLinkPress={(url) => this.handleURL(url)}
           />
         </Text>
       </View>
@@ -142,10 +151,10 @@ else{
     <View style={{ height: windowSize.height}}>
     <ScrollView style={{ marginTop: 20 }}>
       <ArticleCardArt>
-        <View style={{ marginLeft: 8, marginRight: 8 }}>
+        <View style={{ marginLeft: 8, marginRight: 8, marginTop: 12 }}>
           <Text style={styles.headerTextStyle}><HTMLView value={ this.state.title } /></Text>
-          <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID} | {this.state.date}</Text>
-          <Text style={styles.descriptionTextStyle}><HTMLView value={ this.props.article.content.rendered } /></Text>
+          <Text style={{ color: '#778899', fontSize: 10, paddingTop: 11, paddingBottom: 16 }}>{this.state.authorID} | {this.state.date}</Text>
+          <Text style={styles.descriptionTextStyle}><HTMLView value={ this.props.article.content.rendered } onLinkPress={(url) => Linking.openURL.call(Linking, url)}/></Text>
         </View>
       </ArticleCardArt>
     </ScrollView>

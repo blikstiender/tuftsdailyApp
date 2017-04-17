@@ -36,7 +36,9 @@ async fetchFeatures() {
   }
 
   render() {
-    const goBack = () => Actions.pop();
+  //  const goBack = () => Actions.popTo('sectionList');
+  const goBack = () => Actions.backAction();
+    //const goToSectionList = () => Actions.sectionList();
 
     if (this.state.isLoading) {
       return (
@@ -46,8 +48,9 @@ async fetchFeatures() {
     else {
       return (
         <View>
-        <ScrollView>
+
           <MainHeader page = 'features' />
+          <ScrollView>
             <FirstArticleCard article={this.state.articles[0]} />
             <ArticleCard>
               <PictureDescriptionArticle article={this.state.articles[1]}/>

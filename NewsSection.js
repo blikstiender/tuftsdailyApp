@@ -45,8 +45,8 @@ async fetchNews() {
     else {
       return (
       <View>
-        <ScrollView>
         <MainHeader page = 'news' />
+        <ScrollView>
             <FirstArticleCard article={this.state.articles[0]} />
             <ArticleCard>
               <PictureDescriptionArticle article={this.state.articles[1]}/>
