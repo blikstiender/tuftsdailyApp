@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import HTMLView from 'react-native-htmlview';
+import HTMLView from './costum_modules/react-native-htmlview';
 import ArticleCard from './ArticleCard';
 import ArticleCardSection2 from './ArticleCardSection2';
 import ShareButton from './ShareButton';
