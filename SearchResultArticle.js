@@ -143,7 +143,7 @@ const styles = {
   headerTextStyle: {
     fontSize: 14,
     fontWeight: '500',
-    fontFamily: 'Superclarendon',
+    // fontFamily: 'Superclarendon',
   //  justifyContent: 'center',
     paddingTop: 10,
 //    marginLeft: 5,
