@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, TextInput, Linking } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BlurView, VibrancyView } from 'react-native-blur';
 
@@ -26,7 +26,7 @@ class SectionList extends Component {
     const goToShuttle = () => Actions.shuttle();
     const goToAbout = () => Actions.about();
     const goToContact = () => Actions.contact();
-    const goToDonate = () => Actions.donate();
+    const goToDonate = () => Linking.openURL('https://tuftsgiving.org/giving-form.html?id=1&showarea=AR000684&areaid=333&appealcode=A9970');
 
     return (
       <Image source={Images.screenpic2} style={styles.backgroundStyle}>

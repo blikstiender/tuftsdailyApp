@@ -82,7 +82,7 @@ const styles = {
 
   descriptionTextStyle: {
     fontSize: 16,
-    color: 'black',
+    color: 'blue',
     fontFamily: 'Avenir',
     marginBottom: 10
   },
