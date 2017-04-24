@@ -46,7 +46,7 @@ async fetchSports() {
       return (
         <View>
           <MainHeader page='sports'/>
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ paddingBottom: 160 }}>
           <FirstArticleCard article= {this.state.articles[0]} />
           <ArticleCard>
             <PictureHeadlineArticle article={this.state.articles[1]} />
@@ -73,7 +73,7 @@ async fetchSports() {
             <PictureHeadlineArticle article={this.state.articles[16]} isLast={true}/>
           </ArticleCard>
         </ScrollView>
-        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 20, justifyContent: 'center'}}>
+        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 100, justifyContent: 'center'}}>
           <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
         </TouchableOpacity>
       </View>

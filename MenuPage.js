@@ -39,7 +39,8 @@ export default class MenuPage extends Component {
 
   closeActivityIndicator() {
         setTimeout(() => {
-           this.setState({animating: false});
+          if (this.Mounted) {
+           this.setState({animating: false});}
         }, 2000);
      }
      componentDidMount() {
@@ -190,17 +191,12 @@ export default class MenuPage extends Component {
     }
     //console.log('Hi')
     return (
-      <View style={{ flex: 2, backgroundColor: '#f7f7f7' }}>
-        <ScrollView
-          style={styles.background}
-          stickyHeaderIndices={[0]}
-        >
-          <View style={{ backgroundColor: '#f7f7f7'}}>
+      <View style={{ flex: 2 }}>
           <MainHeader page='menus'/>
           <SubHeader tabs={this.state.diningHallTabs}
                      currentTab={this.state.currentDiningHallTab}
                      onTabPressed={(tab, e) => this.handleDiningHallTabPressed(tab, e)}/>
-          </View>
+          <ScrollView>
           <ArticleCard>
             <View style={{ backgroundColor: 'white'}}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -217,7 +213,7 @@ export default class MenuPage extends Component {
         <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 50, justifyContent: 'center'}}>
           <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
         </TouchableOpacity>
-        <View style={{ backgroundColor: 'white'}}>
+        <View style={{ backgroundColor: 'white', borderTopWidth: 3, borderTopColor: '#f7f7f7'}}>
         <MealHeader tabs={this.state.mealTabs}
                    currentTab={this.state.currentMealTab}
                    onTabPressed={(tab, e) => this.handleMealTabPressed(tab, e)}/>

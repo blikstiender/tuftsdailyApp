@@ -37,7 +37,7 @@ async fetchFeatures() {
 
   render() {
   //  const goBack = () => Actions.popTo('sectionList');
-  const goBack = () => Actions.backAction();
+  const goBack = () => Actions.pop();
     //const goToSectionList = () => Actions.sectionList();
 
     if (this.state.isLoading) {
@@ -50,7 +50,7 @@ async fetchFeatures() {
         <View>
 
           <MainHeader page = 'features' />
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ paddingBottom: 160 }}>
             <FirstArticleCard article={this.state.articles[0]} />
             <ArticleCard>
               <PictureDescriptionArticle article={this.state.articles[1]}/>
@@ -76,7 +76,7 @@ async fetchFeatures() {
         <HeadlineArticle article={this.state.articles[15]} isLast = {true}/>
     </ArticleCard>
         </ScrollView>
-        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 20, justifyContent: 'center'}}>
+        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 100, justifyContent: 'center'}}>
           <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
         </TouchableOpacity>
       </View>

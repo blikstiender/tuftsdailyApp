@@ -38,12 +38,12 @@ export default class MainView extends Component {
   render() {
     // const goToPageTwo = () => Actions.fullOpinionsList();
     return (
-      <View>
+      <View >
           <MainHeader />
           <SubHeader tabs={this.state.tabs}
                      currentTab={this.state.currentTab}
                      onTabPressed={(tab, e) => this.handleTabPressed(tab, e)}/>
-          <ScrollView style={styles.background}>
+          <ScrollView contentContainerStyle={styles.background}>
           {this.renderArticles()}
         </ScrollView>
       </View>
@@ -69,8 +69,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   background: {
-    backgroundColor: '#F8F8F8',
-    flexDirection: 'column'
+  //  backgroundColor: '#F8F8F8',
+    flexDirection: 'column',
+    paddingBottom: 130
   },
   navBar: {
     backgroundColor: '#0000FF',

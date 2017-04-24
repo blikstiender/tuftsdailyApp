@@ -79,7 +79,7 @@ this.Mounted = true;
             style={{ paddingTop: 15 }}
             size="large"
         />
-        <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 20, justifyContent: 'center'}}>
+        <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 15, bottom: 20, justifyContent: 'center'}}>
           <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
         </TouchableOpacity>
         </View>
@@ -87,8 +87,8 @@ this.Mounted = true;
     }
     else {
     return (
-      <View style={{ flex: 0, backgroundColor: '#e4e4e4', height: require('Dimensions').get('window').height, }}>
-        <ScrollView style={{ marginLeft: 5, marginRight: 5, backgroundColor: 'white' }}>
+      <View style={{ flex: 0, backgroundColor: '#f7f7f7', height: require('Dimensions').get('window').height, }}>
+        <ScrollView contentContainerStyle={{ marginLeft: 5, marginRight: 5, backgroundColor: 'white'}}>
         <View style={{marginTop: 30, marginLeft: 10, marginRight: 10 }}>
         <TextInput
     style={{height: 40, width: require('Dimensions').get('window').width * .8, paddingLeft: 5, borderColor: '#797979', borderWidth: 0.5, borderRadius: 10  }}
@@ -105,8 +105,9 @@ this.Mounted = true;
         <Text style={{ color: '#797979', fontSize: 10 }}> {this.state.numArticles == 1 ? 'result':'results'}</Text>
       </View>
         {this.renderResults()}
+        <View style={{ backgroundColor: '#f7f7f7', height: 80 }} />
       </ScrollView>
-      <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 20, justifyContent: 'center'}}>
+      <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 15, bottom: 20, justifyContent: 'center'}}>
         <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
       </TouchableOpacity>
     </View>

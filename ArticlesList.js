@@ -18,9 +18,8 @@ class ArticlesList extends Component {
     this.state = { articles: [], isLoading: true, animating: true, unmounted: false, isMounted: false };
 }
 
-componentWillMount() {
+async componentWillMount() {
   this.Mounted = true;
-  this.fetchFeatures();
 }
 
 closeActivityIndicator() {
@@ -30,7 +29,8 @@ closeActivityIndicator() {
        }
       }, 2000);
    }
-   componentDidMount() {
+   async componentDidMount() {
+     this.fetchFeatures();
       this.closeActivityIndicator();
    }
 

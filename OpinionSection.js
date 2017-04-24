@@ -65,7 +65,7 @@ isCartoon() {
       return (
         <View>
           <MainHeader page = 'opinion' />
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ paddingBottom: 160 }}>
           <FirstArticleCard article={this.state.articles[0]} />
           <ArticleCard>
             <HeadlineArticle article={this.state.articles[1]}/>
@@ -97,7 +97,7 @@ isCartoon() {
             <HeadlineArticle article={this.state.articles[19]} isLast={true}/>
           </ArticleCard>
         </ScrollView>
-        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 20, justifyContent: 'center'}}>
+        <TouchableOpacity onPress={goBack} /*onPress={goToSectionList}*/ style={{position: 'absolute', left: 15, bottom: 100, justifyContent: 'center'}}>
           <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
         </TouchableOpacity>
       </View>

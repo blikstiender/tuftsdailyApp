@@ -95,16 +95,26 @@ class NewArticleView extends Component {
 
     handleURL(url) {
       //var matches = url.match(/:\/\/(?:www\.)?(.[^/]+)(.*)/);
-      link = new URL(url);
-      console.log(link.href)
-      if (link.hostname == "tuftsdaily.com") {
-        console.log(link.href.match(/([^\/]*)\/*$/)[1]);
-        var slug = link.href.match(/([^\/]*)\/*$/)[1];
+      console.log(url);
+    //  link = new URL(url);
+    //  console.log(link.href)
+    var hostnameArray = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im);
+    console.log(hostnameArray[1]);
+    var hostname = hostnameArray[1];
+      if (hostname == "tuftsdaily.com") {
+        console.log(url.match(/([^\/]*)\/*$/)[1]);
+        var slug = url.match(/([^\/]*)\/*$/)[1];
         var fetchURL = 'https://tuftsdaily.com/wp-json/wp/v2/posts?slug=' + slug;
         this.fetchArticle(fetchURL);
     }
     else {
-      Linking.openURL.call(Linking, url);
+      Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.log('Don\'t know how to open URI: ' + url);
+      }
+    });
     }
   }
 
@@ -198,10 +208,7 @@ else{
     <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
       <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
     </TouchableOpacity>
-    <TouchableOpacity style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
-      <Image source={Images.blackhearticon} style={{ height: 40, width: 40}} />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={goBack} style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
+    <TouchableOpacity onPress={() => this.shareArticle()} style={{position: 'absolute', right: 30, bottom: 10, justifyContent: 'center'}}>
       <Image source={Images.shareicon} style={{ height: 40, width: 40}} />
     </TouchableOpacity>
   </View>
@@ -230,7 +237,7 @@ const styles = {
   },
 
   descriptionTextStyle: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#696969',
     fontFamily: 'Avenir',
     marginBottom: 10

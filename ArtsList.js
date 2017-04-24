@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import ArticleCard from './ArticleCard';
 import PictureDescriptionArticle from './PictureDescriptionArticle';
 import PictureHeadlineArticle from './PictureHeadlineArticle';
@@ -35,6 +36,7 @@ async fetchArts() {
   }
 
   render() {
+    const goToArts = () => Actions.artsSection();
     if (this.state.isLoading) {
       return (
         <Text></Text>
@@ -50,7 +52,7 @@ async fetchArts() {
           <ArticleCard>
             <PictureHeadlineArticle article={this.state.articles[1]} />
             <HeadlineArticle article={this.state.articles[2]} />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={goToArts}>
               <View style={{ padding: 5, justifyContent: 'space-between', flexDirection: 'row',alignItems:'center', backgroundColor: '#fff', }}>
                 <Text style={{ color: '#a8a8a8', fontSize: 10, paddingLeft: 3 }}>More Arts</Text>
                 <Text style={{ color: '#67A1D1', fontSize: 20, fontWeight: '500', paddingRight: 3 }}>></Text>
