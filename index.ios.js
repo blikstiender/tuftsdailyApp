@@ -26,6 +26,9 @@ import SectionList from './SectionList';
 import SearchResults from './SearchResults';
 import MenuPage from './MenuPage';
 import ShuttlePage from './ShuttlePage';
+import AboutPage from './AboutPage';
+import ContactPage from './ContactPage';
+import DonatePage from './DonatePage';
 
 
 export default class tuftsdailyApp extends Component {
@@ -34,6 +37,7 @@ export default class tuftsdailyApp extends Component {
     return (
       <Router>
         <Scene key="root">
+        {/*  <Scene key="landing" component = {LandingPage} initial = {true} hideNavBar={true} />*/}
           <Scene key="home" component={MainView} title="The Tufts Daily" initial={true} hideNavBar={true} />
           <Scene key="pageThree" component={NewArticleView} title="The Tufts Daily" hideNavBar={true} />
           <Scene key="sectionList" component={SectionList} hideNavBar={true} direction="leftToRight"/>
@@ -45,6 +49,9 @@ export default class tuftsdailyApp extends Component {
           <Scene key="searchResults" component={SearchResults} title="Results" hideNavBar={true} />
           <Scene key="menus" component={MenuPage} title="Menus" hideNavBar={true} />
           <Scene key="shuttle" component={ShuttlePage} title="Shuttle" hideNavBar={true} />
+          <Scene key="about" component={AboutPage} title="About" hideNavBar={true} />
+          <Scene key="contact" component={ContactPage} title="Contact" hideNavBar={true} />
+          <Scene key="donate" component={DonatePage} title="Donate" hideNavBar={true} />
         </Scene>
       </Router>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BlurView, VibrancyView } from 'react-native-blur';
 
@@ -24,11 +24,15 @@ class SectionList extends Component {
     const goToFeatures = () => Actions.featuresSection();
     const goToMenus =() => Actions.menus();
     const goToShuttle = () => Actions.shuttle();
+    const goToAbout = () => Actions.about();
+    const goToContact = () => Actions.contact();
+    const goToDonate = () => Actions.donate();
 
     return (
       <Image source={Images.screenpic2} style={styles.backgroundStyle}>
         <BlurView blurType="xlight" blurAmount={20} >
           <View style={styles.viewStyle}>
+            <ScrollView>
             <View style={{marginTop: 30, marginLeft: 40}}>
             <TextInput
         style={{height: 40, width: 220}}
@@ -66,26 +70,24 @@ class SectionList extends Component {
         <View style={styles.borderStyle}>
         </View>
         <TouchableOpacity onPress={goToMenus} style={{ paddingTop: 10 }}>
-          <Text style={styles.otherTextStyle}>Menu</Text>
+          <Text style={styles.otherTextStyle}>Dining Menus</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={goToShuttle} style={{ paddingTop: 40, paddingBottom: 10 }}>
           <Text style={styles.otherTextStyle}>Shuttle</Text>
         </TouchableOpacity>
         <View style={styles.borderStyle}>
         </View>
-        <TouchableOpacity style={{ paddingTop: 25}}>
+        <TouchableOpacity onPress={goToAbout} style={{ paddingTop: 25}}>
        <Text style={styles.otherTextStyle}>About</Text>
        </TouchableOpacity>
-       <TouchableOpacity style={{ paddingTop: 25}}>
-      <Text style={styles.otherTextStyle}>Advertise</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={{ paddingTop: 25}}>
+      <TouchableOpacity onPress={goToContact} style={{ paddingTop: 25}}>
      <Text style={styles.otherTextStyle}>Contact</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{ paddingTop: 25}}>
+     <TouchableOpacity onPress={goToDonate} style={{ paddingTop: 25}}>
     <Text style={styles.otherTextStyle}>Donate</Text>
     </TouchableOpacity>
       </View>
+    </ScrollView>
     </View>
   </BlurView>
   </Image>

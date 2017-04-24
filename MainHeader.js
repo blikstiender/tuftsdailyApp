@@ -10,18 +10,18 @@ export default class MainHeader extends Component {
     super(props);
     this.state = { temp: 32, isLoading: true, imageURL: '', page: this.props.page ? this.props.page : 'home' };
   }
-  componentWillMount() {
+  async componentWillMount() {
     this.Mounted = true;
-    this.fetchWeather();
-    this.fetchDavisETA();
-    this.fetchCCETA();
   }
 
   componentWillUnmount() {
     this.Mounted = false;
   }
 
-  componentDidMount(){
+  async componentDidMount(){
+    this.fetchWeather();
+    this.fetchDavisETA();
+    this.fetchCCETA();
   this.timer = setInterval(()=> this.fetchDavisETA(), 30000)
   this.timer = setInterval(()=> this.fetchCCETA(), 30000)
  }

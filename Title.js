@@ -89,8 +89,34 @@ export default class Title extends Component {
     else if (this.state.page == 'menus') {
       return (
       <View style={styles.container}>
+        <Text style={ styles.big }>D</Text>
+        <Text style={ styles.small }>INING </Text>
         <Text style={ styles.big }>M</Text>
         <Text style={ styles.small }>ENUS </Text>
+      </View>
+    )
+    }
+    else if (this.state.page == 'about') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>A</Text>
+        <Text style={ styles.small }>BOUT </Text>
+      </View>
+    )
+    }
+    else if (this.state.page == 'contact') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>C</Text>
+        <Text style={ styles.small }>ONTACT </Text>
+      </View>
+    )
+    }
+    else if (this.state.page == 'donate') {
+      return (
+      <View style={styles.container}>
+        <Text style={ styles.big }>D</Text>
+        <Text style={ styles.small }>ONATE</Text>
       </View>
     )
     }
