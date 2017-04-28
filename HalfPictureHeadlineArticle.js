@@ -133,21 +133,23 @@ const styles = {
   },
   headerTextStyle: {
     fontSize: 18,
-    fontWeight: '500',
-    justifyContent: 'center',
-    paddingTop: 5,
-    marginLeft: 5,
-    marginRight: 5
-  },
-
-  otherHeaderTextStyle: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontWeight: '300',
     justifyContent: 'center',
     paddingTop: 5,
     marginLeft: 5,
     marginRight: 5,
-    textAlign: 'right'
+    fontFamily: 'Superclarendon',
+  },
+
+  otherHeaderTextStyle: {
+    fontSize: 18,
+    fontWeight: '300',
+    justifyContent: 'center',
+    paddingTop: 5,
+    marginLeft: 5,
+    marginRight: 5,
+    textAlign: 'right',
+    fontFamily: 'Superclarendon',
   },
 
   descriptionTextStyle: {

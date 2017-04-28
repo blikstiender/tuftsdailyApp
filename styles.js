@@ -7,9 +7,10 @@ const ArticleListStyle = {
   },
   headerTextStyle: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '300',
     justifyContent: 'center',
-    height: null
+    height: null,
+    fontFamily: 'Superclarendon',
 
   },
 

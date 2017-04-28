@@ -71,11 +71,12 @@ const styles = {
   },
   headerTextStyle: {
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: '300',
     justifyContent: 'center',
     marginLeft: 40,
     marginRight: 40,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'Superclarendon',
 
   },
   descriptionTextStyle: {

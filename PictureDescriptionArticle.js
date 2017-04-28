@@ -129,14 +129,15 @@ const styles = {
   },
   headerTextStyle: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '300',
     justifyContent: 'center',
     paddingBottom: 5,
+    fontFamily: 'Superclarendon',
 
   },
 
   descriptionTextStyle: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#696969',
     fontFamily: 'Avenir',
     marginBottom: 10

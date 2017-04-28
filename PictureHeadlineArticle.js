@@ -128,8 +128,9 @@ const styles = {
   },
   headerTextStyle: {
     fontSize: 16,
-    fontWeight: '500',
-    justifyContent: 'center'
+    fontWeight: '300',
+    justifyContent: 'center',
+    fontFamily: 'Superclarendon',
 
   },
 

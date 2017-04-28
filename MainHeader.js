@@ -107,8 +107,8 @@ class DoubleLine extends Component {
   render() {
     return (
       <View>
-        <View style={{ backgroundColor: '#000', height: 1, width: 200, marginBottom: 2 }} />
-        <View style={{ backgroundColor: '#000', height: 1, width: 200 }} />
+        <View style={{ backgroundColor: '#000', height: 1, width: 115, marginBottom: 2 }} />
+        <View style={{ backgroundColor: '#000', height: 1, width: 115 }} />
       </View>
     )
   }

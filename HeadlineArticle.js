@@ -108,7 +108,7 @@ const styles = {
   headlineCSS: {
     p: {
       fontSize: 16,
-      fontWeight: '500',
+      fontWeight: '300',
       justifyContent: 'center',
     }
   },

@@ -173,7 +173,7 @@ return (
         <Text style={styles.headerTextStyle}>
           <HTMLView value={ this.state.title } />
         </Text>
-        <Text style={{ color: '#778899', fontSize: 10 }}>{this.state.authorID} | {this.state.date}</Text>
+        <Text style={{ color: '#778899', fontSize: 10, paddingBottom: 12 }}>{this.state.authorID} | {this.state.date}</Text>
         <Text style={styles.descriptionTextStyle}>
           <HTMLView
             value={ this.props.article.content.rendered }
@@ -229,10 +229,11 @@ const styles = {
 
   },
   headerTextStyle: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '500',
     justifyContent: 'center',
     paddingBottom: 5,
+    fontFamily: 'Superclarendon',
 
   },
 
