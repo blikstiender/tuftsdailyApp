@@ -230,7 +230,7 @@ const styles = {
   },
   headerTextStyle: {
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: '300',
     justifyContent: 'center',
     paddingBottom: 5,
     fontFamily: 'Superclarendon',

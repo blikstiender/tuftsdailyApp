@@ -18,7 +18,7 @@ render() {
   return (
     <View style={{ height: windowSize.height}}>
       <MainHeader page="contact" />
-      <ArticleCard>
+
         <View style={{ backgroundColor: 'white', marginBottom: 20, justifyContent: 'center', alignItems: 'center'}}>
     <ScrollView contentContainerStyle={{ paddingBottom: 60 }}>
       <TouchableOpacity onPress={() => Linking.openURL('mailto:online@tuftsdaily.com')} style={{ paddingTop: 25}}>
@@ -53,7 +53,7 @@ render() {
 </TouchableOpacity>
     </ScrollView>
   </View>
-    </ArticleCard>
+    
     <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
       <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
     </TouchableOpacity>

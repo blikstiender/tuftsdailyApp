@@ -47,7 +47,7 @@ render() {
   return (
     <View style={{ height: windowSize.height}}>
       <MainHeader page="about" />
-      <ArticleCard>
+
         <View style={{ backgroundColor: 'white', paddingTop: 12}}>
     <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
         <View style={{ marginLeft: 8, marginRight: 8 }}>
@@ -55,7 +55,7 @@ render() {
         </View>
     </ScrollView>
   </View>
-    </ArticleCard>
+  
     <TouchableOpacity onPress={goBack} style={{position: 'absolute', left: 30, bottom: 10, justifyContent: 'center'}}>
       <Image source={Images.backarrow} style={{ height: 40, width: 40}} />
     </TouchableOpacity>
