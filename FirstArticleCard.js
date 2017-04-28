@@ -37,7 +37,7 @@ class FirstArticleCard extends Component {
         let response = await fetch(this.setURL());
         let responseJson = await response.json();
         if (this.Mounted) {
-          this.setState({ imageID: responseJson.media_details.sizes.medium.source_url, isLoading: false });
+          this.setState({ imageID: responseJson.media_details.sizes.medium ? responseJson.media_details.sizes.medium.source_url : '' , isLoading: false });
         }
       } catch(error) {
         console.error(error);
@@ -102,7 +102,7 @@ render() {
       </TouchableOpacity>
     )
   }
-  else if (this.props.article.featured_media == 0 ) {
+  else if (this.props.article.featured_media == 0 || this.state.imageID == "" ) {
     return (
       <TouchableOpacity onPress={goToArticle}>
         <ArticleCard>
