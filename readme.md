@@ -1,5 +1,8 @@
-Tufts Daily App - Readme
-=========================
+View it on the [App Store](https://itunes.apple.com/us/app/tufts-daily/id1231524256?ls=1&mt=8)!
+
+
+Tufts Daily App
+===============
 
 Set-up instructions 
 -------------------
